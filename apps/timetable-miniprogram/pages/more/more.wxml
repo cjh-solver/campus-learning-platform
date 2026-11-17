@@ -1,0 +1,95 @@
+<view class="page">
+  <view class="group">
+    <view class="group-head">
+      <text class="gh-t">工具</text>
+      <text class="gh-s">{{editing ? '松手保存顺序' : '长按可调整顺序'}}</text>
+    </view>
+
+    <view class="grid" style="height:{{gridH}}rpx">
+      <view
+        wx:for="{{cells}}"
+        wx:key="id"
+        class="cell {{item.id === 'ghost' ? 'cell-ghost' : ''}} {{dragId === item.id ? 'cell-lifted' : ''}}"
+        style="transform:translate3d({{item.tx}}rpx,{{item.ty}}rpx,0)"
+        data-id="{{item.id}}"
+        bindtap="onCellTap"
+        bindtouchstart="onCellTouchStart"
+        catchtouchmove="onCellTouchMove"
+        bindtouchend="onCellTouchEnd"
+        bindtouchcancel="onCellTouchEnd" hover-class="tap-press">
+        <view class="ic {{item.id === 'grade' ? 'ic-grade' : ''}} {{item.id === 'contest' ? 'ic-contest' : ''}} {{item.id === 'countdown' ? 'ic-clock' : ''}} {{item.id === 'pomodoro' ? 'ic-pm' : ''}} {{item.id === 'free' ? 'ic-free' : ''}}">
+          <block wx:if="{{item.id === 'grade'}}">
+            <view class="g-axis"></view>
+            <view class="g-bar g1"></view>
+            <view class="g-bar g2"></view>
+            <view class="g-bar g3"></view>
+          </block>
+          <block wx:elif="{{item.id === 'contest'}}">
+            <view class="cup">
+              <view class="cup-ear el"></view>
+              <view class="cup-ear er"></view>
+            </view>
+            <view class="cup-neck"></view>
+            <view class="cup-base"></view>
+          </block>
+          <block wx:elif="{{item.id === 'countdown'}}">
+            <view class="cl-ring"></view>
+            <view class="cl-hand h1"></view>
+            <view class="cl-hand h2"></view>
+            <view class="cl-dot"></view>
+          </block>
+          <block wx:elif="{{item.id === 'pomodoro'}}">
+            <view class="pm-body"></view>
+            <view class="pm-leaf"></view>
+          </block>
+          <block wx:elif="{{item.id === 'ghost'}}">
+            <view class="pl-h"></view>
+            <view class="pl-v"></view>
+          </block>
+          <block wx:else>
+            <view class="door-frame"><view class="door-knob"></view></view>
+          </block>
+        </view>
+        <view class="c-t {{item.id === 'ghost' ? 'c-t-ghost' : ''}}">{{item.title}}</view>
+        <view class="c-s {{item.id === 'ghost' ? 'c-s-ghost' : ''}}">{{item.sub}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="tip">{{editing ? '拖动格子调整顺序，松手自动保存' : '更多能力还在路上'}}</view>
+
+  <view class="drag-layer" wx:if="{{dragId}}">
+    <view class="dl-card {{settling ? 'dl-settle' : ''}}" style="width:{{floatW}}px;height:{{floatH}}px;transform:translate3d({{floatX}}px,{{floatY}}px,0)">
+      <view class="ic {{dragId === 'grade' ? 'ic-grade' : ''}} {{dragId === 'contest' ? 'ic-contest' : ''}} {{dragId === 'countdown' ? 'ic-clock' : ''}} {{dragId === 'pomodoro' ? 'ic-pm' : ''}} {{dragId === 'free' ? 'ic-free' : ''}}">
+        <block wx:if="{{dragId === 'grade'}}">
+          <view class="g-axis"></view>
+          <view class="g-bar g1"></view>
+          <view class="g-bar g2"></view>
+          <view class="g-bar g3"></view>
+        </block>
+        <block wx:elif="{{dragId === 'contest'}}">
+          <view class="cup">
+            <view class="cup-ear el"></view>
+            <view class="cup-ear er"></view>
+          </view>
+          <view class="cup-neck"></view>
+          <view class="cup-base"></view>
+        </block>
+        <block wx:elif="{{dragId === 'countdown'}}">
+          <view class="cl-ring"></view>
+          <view class="cl-hand h1"></view>
+          <view class="cl-hand h2"></view>
+          <view class="cl-dot"></view>
+        </block>
+        <block wx:elif="{{dragId === 'pomodoro'}}">
+          <view class="pm-body"></view>
+          <view class="pm-leaf"></view>
+        </block>
+        <block wx:else>
+          <view class="door-frame"><view class="door-knob"></view></view>
+        </block>
+      </view>
+      <view class="c-t">{{dragCellTitle}}</view>
+    </view>
+  </view>
+</view>

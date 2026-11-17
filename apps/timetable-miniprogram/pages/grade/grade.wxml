@@ -1,0 +1,259 @@
+<view class="page">
+  <view class="seg">
+    <view class="seg-btn {{cat === item.key ? 'on' : ''}}" wx:for="{{cats}}" wx:key="key"
+      data-key="{{item.key}}" bindtap="onSwitchCat" hover-class="tap-press">{{item.label}}</view>
+  </view>
+
+  <view class="seg-body {{fadeFlip ? 'fx-b' : 'fx-a'}}">
+  <block wx:if="{{cat === 'personal'}}">
+    <view class="sum" wx:if="{{hasData}}">
+      <view class="sum-cell">
+        <text class="sum-num">{{sum.avg}}</text>
+        <text class="sum-lab">加权均分</text>
+      </view>
+      <view class="sum-cell">
+        <text class="sum-num">{{sum.gpa}}</text>
+        <text class="sum-lab">加权绩点</text>
+      </view>
+      <view class="sum-cell">
+        <text class="sum-num">{{sum.credit}}</text>
+        <text class="sum-lab">总学分</text>
+      </view>
+      <view class="sum-cell">
+        <text class="sum-num {{sum.fail ? 'bad' : ''}}">{{sum.fail}}</text>
+        <text class="sum-lab">不及格</text>
+      </view>
+    </view>
+
+    <view class="empty-card" wx:else>
+      <view class="empty-title">还没有个人成绩</view>
+      <view class="empty-sub">拍一张成绩单截图，本机识别，图片不出手机；认完先核对，再存进去</view>
+      <view class="empty-btn" bindtap="onScanGrades" hover-class="press-brand">拍成绩单截图</view>
+      <view class="empty-links">
+        <text class="el-link" bindtap="onOpenPaste" hover-class="tap-press">粘一段</text>
+        <text class="el-sep">·</text>
+        <text class="el-link" bindtap="onImportGrades" hover-class="tap-press">文件导入</text>
+        <text class="el-sep">·</text>
+        <text class="el-link" bindtap="onOpenOne" hover-class="tap-press">手动加一条</text>
+        <text class="el-sep">·</text>
+        <text class="el-link" bindtap="onOpenPrompt" hover-class="tap-press">提示词</text>
+      </view>
+    </view>
+
+    <view class="chart" wx:if="{{bars.length}}">
+      <view class="chart-head">
+        <text class="chart-title">各科分数</text>
+        <text class="chart-sub">从低到高</text>
+      </view>
+      <view class="brow" wx:for="{{bars}}" wx:key="id">
+        <text class="bname">{{item.name}}</text>
+        <view class="btrack">
+          <view class="bfill" style="width:{{item.w}}%;background:{{item.color}}"></view>
+        </view>
+        <text class="bval">{{item.score}}</text>
+      </view>
+    </view>
+
+    <view class="chart" wx:if="{{gpaRows.length}}">
+      <view class="chart-head">
+        <text class="chart-title">绩点贡献</text>
+        <text class="chart-sub">绩点 × 学分</text>
+      </view>
+      <view class="brow" wx:for="{{gpaRows}}" wx:key="id">
+        <text class="bname">{{item.name}}</text>
+        <view class="btrack">
+          <view class="bfill warm" style="width:{{item.w}}%"></view>
+        </view>
+        <text class="bval">{{item.value}}</text>
+      </view>
+    </view>
+
+    <view class="chart" wx:if="{{sum.n}}">
+      <view class="chart-head">
+        <text class="chart-title">分数段分布</text>
+        <text class="chart-sub">{{sum.n}} 门</text>
+      </view>
+      <view class="dist">
+        <view class="dcol" wx:for="{{dist}}" wx:key="label">
+          <text class="dval">{{item.text}}</text>
+          <view class="dbar" style="height:{{item.h}}rpx"></view>
+          <text class="dname">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="gsec" wx:for="{{groups}}" wx:key="term" wx:for-item="g">
+      <view class="ghead">
+        <text class="gterm">{{g.term}}</text>
+        <text class="gmeta">{{g.meta}}</text>
+      </view>
+      <view class="grow" wx:for="{{g.rows}}" wx:key="id" wx:for-item="r">
+        <view class="gmain">
+          <view class="gname">{{r.course}}</view>
+          <view class="gsub">{{r.meta}}</view>
+        </view>
+        <text class="gscore {{r.fail ? 'f' : ''}}">{{r.score}}</text>
+        <view class="gdel" data-id="{{r.id}}" data-name="{{r.course}}" catchtap="onDelete"
+          hover-class="tap-press"></view>
+      </view>
+    </view>
+
+    <view class="records" wx:if="{{hasData}}">共 {{sum.n}} 门，按学期分开记</view>
+  </block>
+
+  <block wx:else>
+    <view class="empty-card" wx:if="{{!hasData}}">
+      <view class="empty-title">{{cat === 'major' ? '还没有专业考试成绩' : '还没有综测记录'}}</view>
+      <view class="empty-sub">学期末拿到分数后，点下面「加一条」录进来，按学期分开存。</view>
+      <view class="empty-btn" bindtap="onOpenOne" hover-class="press-brand">加一条</view>
+    </view>
+
+    <view class="gsec" wx:for="{{simpleGroups}}" wx:key="term" wx:for-item="g">
+      <view class="ghead">
+        <text class="gterm">{{g.term}}</text>
+        <text class="gmeta">{{g.rows.length}} 条</text>
+      </view>
+      <view class="grow" wx:for="{{g.rows}}" wx:key="id" wx:for-item="r">
+        <view class="gmain">
+          <view class="gname">{{r.course}}</view>
+          <view class="gsub" wx:if="{{r.note}}">{{r.note}}</view>
+        </view>
+        <text class="gscore">{{r.score}}</text>
+        <view class="gdel" data-id="{{r.id}}" data-name="{{r.course}}" catchtap="onDelete"
+          hover-class="tap-press"></view>
+      </view>
+    </view>
+  </block>
+  </view>
+
+  <view class="bottom-gap {{hasData ? 'with-foot' : ''}}"></view>
+
+  <view class="foot" wx:if="{{hasData}}">
+    <view class="f-primary" wx:if="{{cat === 'personal'}}" bindtap="onScanGrades" hover-class="press-brand">拍成绩单</view>
+    <view class="f-primary" wx:else bindtap="onOpenOne" hover-class="press-brand">加一条</view>
+    <view class="f-secondary" wx:if="{{cat === 'personal'}}" bindtap="onOpenPaste" hover-class="tap-press">粘一段</view>
+    <view class="f-link" wx:if="{{cat === 'personal'}}" bindtap="onOpenOne" hover-class="tap-press">加一条</view>
+  </view>
+
+  <view class="mask {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind}}" bindtap="onCloseSheet"></view>
+
+  <view class="sheet {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'paste'}}">
+    <view class="sheet-title">粘一段成绩</view>
+
+    <view class="field">
+      <text class="field-label">学期</text>
+      <input class="field-input" value="{{paste.term}}" data-f="term" bindinput="onPasteTerm"
+        placeholder="如 2025-2026-2" />
+    </view>
+
+    <textarea class="area" value="{{paste.text}}" bindinput="onPasteText" maxlength="-1"
+      placeholder="一行一门：课程名|学分|成绩|绩点。也可以直接粘学习通那一段带「学分：」「最终成绩：」的卡片"></textarea>
+
+    <view class="area-tools">
+      <view class="tool-btn" bindtap="onPasteFromClipboard" hover-class="tap-press">从剪贴板贴上</view>
+    </view>
+
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+      <view class="sheet-btn primary" bindtap="onRunPaste" hover-class="press-brand">识别并入库</view>
+    </view>
+  </view>
+
+  <view class="sheet {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'ocr'}}">
+    <view class="sheet-title">认出来的成绩</view>
+    <view class="ocr-tip">对照截图核一遍，认错的点 × 删掉再手补。只有等级没分数的单独列在下面，不进统计。</view>
+
+    <view class="field">
+      <text class="field-label">学期</text>
+      <input class="field-input" value="{{ocr.term}}" data-f="term" bindinput="onOcrTerm"
+        placeholder="如 2025-2026-2" />
+    </view>
+
+    <view class="ocr-list">
+      <view class="ocr-row" wx:for="{{ocr.rows}}" wx:key="key">
+        <view class="ocr-main">
+          <input class="ocr-name-input {{item.nameUnknown ? 'warn' : ''}}" value="{{item.course}}"
+            data-i="{{index}}" bindinput="onOcrName"
+            placeholder="课程名被粘连，点这里补" />
+          <view class="ocr-meta">{{item.meta}}</view>
+        </view>
+        <text class="ocr-score">{{item.score}}</text>
+        <view class="gdel" data-key="{{item.key}}" catchtap="onOcrRemove" hover-class="tap-press"></view>
+      </view>
+      <view class="ocr-empty" wx:if="{{!ocr.n}}">一条都没剩下</view>
+    </view>
+
+    <view class="ocr-pending" wx:if="{{ocr.pending.length}}">
+      <view class="ocr-pending-title">这几门没读到分数</view>
+      <view class="ocr-pending-row" wx:for="{{ocr.pending}}" wx:key="key">
+        <input class="ocr-name-input {{item.nameUnknown ? 'warn' : ''}}" value="{{item.course}}"
+          data-i="{{index}}" bindinput="onOcrPendingName"
+          placeholder="课程名被粘连，点这里补" />
+        <view class="ocr-meta">{{item.meta}}</view>
+      </view>
+      <view class="ocr-pending-tip">军训、入学教育这类没有分数的，用「加一条」手录。</view>
+    </view>
+
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+      <view class="sheet-btn primary" bindtap="onOcrSave" hover-class="press-brand">存这 {{ocr.n}} 门</view>
+    </view>
+  </view>
+
+  <view class="sheet {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'one'}}">
+    <view class="sheet-title">{{cat === 'personal' ? '加一门成绩' : (cat === 'major' ? '加一条专业考试' : '加一条综测')}}</view>
+
+    <view class="field">
+      <text class="field-label">名称</text>
+      <input class="field-input" value="{{one.name}}" data-f="name" bindinput="onOneInput"
+        placeholder="{{cat === 'personal' ? '如 大学物理B' : '如 期末考试 / 综合测评'}}" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">分数</text>
+      <input class="field-input" value="{{one.score}}" data-f="score" type="digit" bindinput="onOneInput"
+        placeholder="只填数字" />
+    </view>
+
+    <view class="field" wx:if="{{cat === 'personal'}}">
+      <text class="field-label">学分</text>
+      <input class="field-input" value="{{one.credit}}" data-f="credit" type="digit" bindinput="onOneInput"
+        placeholder="可不填" />
+    </view>
+
+    <view class="field" wx:if="{{cat === 'personal'}}">
+      <text class="field-label">绩点</text>
+      <input class="field-input" value="{{one.gpa}}" data-f="gpa" type="digit" bindinput="onOneInput"
+        placeholder="可不填" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">学期</text>
+      <input class="field-input" value="{{one.term}}" data-f="term" bindinput="onOneInput"
+        placeholder="如 2025-2026-2" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">备注</text>
+      <input class="field-input" value="{{one.note}}" data-f="note" bindinput="onOneInput"
+        placeholder="可不填" />
+    </view>
+
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+      <view class="sheet-btn primary" bindtap="onSaveOne" hover-class="press-brand">保存</view>
+    </view>
+  </view>
+
+  <view class="sheet {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'prompt'}}">
+    <view class="sheet-title">识图取文字</view>
+    <view class="prompt-tip">复制下面这段给能看图的 AI，连同成绩单截图。它按行输出课程、学分、成绩、绩点，你再粘回上一页。</view>
+    <view class="prompt-box">{{promptText}}</view>
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">关闭</view>
+      <view class="sheet-btn primary" bindtap="onCopyPrompt" hover-class="press-brand">复制提示词</view>
+    </view>
+  </view>
+</view>
+
+<canvas type="2d" id="ocrCanvas" class="ocr-canvas"></canvas>

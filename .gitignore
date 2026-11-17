@@ -1,0 +1,19 @@
+# 开发者工具私有配置，含本机路径与个人设置
+project.private.config.json
+
+# 真实教务数据，任何形式都不入库
+*.xls
+*.xlsx
+*.csv
+课表数据*.json
+成绩单*.json
+
+# 截图与原始素材
+*.psd
+*.ai
+
+# 依赖与系统文件
+node_modules/
+.DS_Store
+Thumbs.db
+*.log

@@ -1,0 +1,309 @@
+.page {
+  height: 100vh;
+  padding: 24rpx 0 0;
+  background: #FAF9F6;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.head {
+  padding: 0 40rpx 6rpx;
+}
+
+.h-t {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #1A1E1C;
+  letter-spacing: 0.02em;
+}
+
+.h-s {
+  margin-top: 6rpx;
+  font-size: 21rpx;
+  color: var(--muted);
+}
+
+/* 模式切换 */
+.modes {
+  display: flex;
+  justify-content: center;
+  padding: 14rpx 0 0;
+  flex: none;
+}
+
+.mode {
+  padding: 9rpx 28rpx;
+  margin: 0 8rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  color: #6F756E;
+  background: #F0EDE4;
+}
+
+.mode.on {
+  background: #2E6B57;
+  color: #FFFFFF;
+}
+
+/* 选中实底按压：底色加深，白字不压透明度 */
+.mode.on.tap-press {
+  opacity: 1;
+  background: #285E4D;
+}
+
+/* 舞台 */
+.stage {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0 20rpx;
+}
+
+.tomato-wrap {
+  position: relative;
+}
+
+/* 番茄本体：饱满的横椭圆 */
+.tomato {
+  position: relative;
+  width: 458rpx;
+  height: 410rpx;
+  border-radius: 50% 50% 47% 47% / 52% 52% 48% 48%;
+  background: radial-gradient(118% 108% at 30% 20%, #FF8C7C 0%, #F65B44 36%, #ED3E2B 64%, #D62D21 100%);
+  box-shadow: 0 26rpx 54rpx rgba(214, 45, 33, 0.26);
+}
+
+.running .tomato {
+  width: 510rpx;
+  height: 456rpx;
+}
+
+/* 左上弧形高光 */
+.shine {
+  position: absolute;
+  left: 74rpx;
+  top: 88rpx;
+  width: 130rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: linear-gradient(126deg, rgba(255, 255, 255, 0.46), rgba(255, 255, 255, 0.06));
+  transform: rotate(-28deg);
+}
+
+/* 高光下的小圆点 */
+.spot {
+  position: absolute;
+  left: 62rpx;
+  top: 168rpx;
+  width: 26rpx;
+  height: 26rpx;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.34);
+}
+
+/* 蒂：短茎加四片贴伏叶 */
+.calyx {
+  position: absolute;
+  left: 50%;
+  top: -14rpx;
+  width: 164rpx;
+  height: 117rpx;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.running .calyx {
+  top: -16rpx;
+  width: 182rpx;
+  height: 130rpx;
+}
+
+/* 中央读数 */
+.pit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: 600rpx;
+}
+
+.clock {
+  font-size: 116rpx;
+  font-weight: 700;
+  line-height: 1;
+  color: #FFFFFF;
+  letter-spacing: 0.03em;
+  text-shadow: 0 6rpx 16rpx rgba(150, 22, 12, 0.3);
+  font-variant-numeric: tabular-nums;
+}
+
+.running .clock {
+  font-size: 118rpx;
+}
+
+.state-label {
+  margin-top: 16rpx;
+  font-size: 21rpx;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* 按钮骑在番茄下沿 */
+.main-btn {
+  position: absolute;
+  left: 50%;
+  bottom: -20rpx;
+  transform: translateX(-50%);
+  min-width: 268rpx;
+  height: 82rpx;
+  padding: 0 36rpx;
+  box-sizing: border-box;
+  border-radius: 999rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #FFFFFF;
+  background: linear-gradient(180deg, #FF7161 0%, #F0402D 100%);
+  border: 3rpx solid rgba(255, 255, 255, 0.88);
+  box-shadow: 0 14rpx 30rpx rgba(214, 45, 33, 0.32);
+}
+
+/* 运行时番茄轻微呼吸 */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.018); }
+}
+
+.breathe {
+  animation: breathe 2.2s ease-in-out infinite;
+}
+
+/* 数字翻牌 */
+@keyframes flipInA {
+  0% { transform: rotateX(-84deg); opacity: 0.35; }
+  100% { transform: rotateX(0deg); opacity: 1; }
+}
+
+@keyframes flipInB {
+  0% { transform: rotateX(-84deg); opacity: 0.35; }
+  100% { transform: rotateX(0deg); opacity: 1; }
+}
+
+.flip-a {
+  animation: flipInA 420ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.flip-b {
+  animation: flipInB 420ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+/* 滚轮选择时长 */
+.picker-zone {
+  flex: none;
+  margin-top: 72rpx;
+  width: 100%;
+}
+
+.wheel-wrap {
+  position: relative;
+  height: 320rpx;
+}
+
+.wheel {
+  height: 320rpx;
+  padding: 0 96rpx;
+  box-sizing: border-box;
+}
+
+.w-item {
+  height: 64rpx;
+  line-height: 64rpx;
+  text-align: center;
+  font-size: 46rpx;
+  color: #C3BDB2;
+  font-variant-numeric: tabular-nums;
+  transition: color 160ms ease;
+}
+
+.w-item.sel {
+  color: #1A1E1C;
+  font-weight: 600;
+}
+
+.colon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -54%);
+  font-size: 42rpx;
+  font-weight: 600;
+  color: #1A1E1C;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.presets {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 6rpx 30rpx 0;
+}
+
+.preset {
+  min-width: 108rpx;
+  height: 64rpx;
+  margin: 8rpx 8rpx;
+  padding: 0 10rpx;
+  box-sizing: border-box;
+  border-radius: 999rpx;
+  background: #FFFFFF;
+  border: 2rpx solid #E8E5DC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 23rpx;
+  color: #6F756E;
+}
+
+.preset.on {
+  border-color: #E6C3BC;
+  background: #FFF6F4;
+  color: #D63A28;
+  font-weight: 600;
+}
+
+/* 底部 */
+.foot {
+  flex: none;
+  padding: 14rpx 0 26rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reset {
+  padding: 16rpx 30rpx;
+  margin-bottom: 10rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  color: var(--muted);
+  background: #F0EDE4;
+}
+
+.stats {
+  font-size: 21rpx;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}

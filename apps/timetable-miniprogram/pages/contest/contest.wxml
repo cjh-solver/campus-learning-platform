@@ -1,0 +1,135 @@
+<view class="page">
+
+  <view class="hero">
+    <view class="hero-title">竞赛日程</view>
+    <view class="hero-sub">校级 A、B 类学科竞赛 · 本科生可报 · 点开看赛程</view>
+  </view>
+
+  <view class="stat-card">
+    <view class="stat {{level === 'all' ? 'on' : ''}}" data-level="all" bindtap="onPickLevel" hover-class="tap-press">
+      <view class="stat-num">{{total}}</view>
+      <view class="stat-label">全部</view>
+    </view>
+    <view class="stat {{level === 'A' ? 'on' : ''}}" data-level="A" bindtap="onPickLevel" hover-class="tap-press">
+      <view class="stat-num">{{aCount}}</view>
+      <view class="stat-label">A 类</view>
+    </view>
+    <view class="stat {{level === 'B' ? 'on' : ''}}" data-level="B" bindtap="onPickLevel" hover-class="tap-press">
+      <view class="stat-num">{{bCount}}</view>
+      <view class="stat-label">B 类</view>
+    </view>
+    <view class="stat {{level === 'fav' ? 'on' : ''}}" data-level="fav" bindtap="onPickLevel" hover-class="tap-press">
+      <view class="stat-num">{{favCount}}</view>
+      <view class="stat-label">已关注</view>
+    </view>
+  </view>
+
+  <view class="bar">
+    <view class="bar-tip">{{shown}} 项符合当前筛选</view>
+    <view class="dept-btn" bindtap="onOpenDept" hover-class="tap-press">
+      <text class="dbt">{{deptLabel}}</text>
+      <view class="caret"><view class="arrow arrow-d"></view></view>
+    </view>
+  </view>
+
+  <view class="groups {{fadeFlip ? 'fx-b' : 'fx-a'}}">
+
+    <view class="mg" wx:for="{{groups}}" wx:key="month">
+
+      <block wx:if="{{item.past}}">
+        <view class="mg-head fold" bindtap="onTogglePast" hover-class="tap-row">
+          <text class="mg-m muted">{{item.name}}</text>
+          <text class="mg-n">{{item.n}} 项</text>
+          <view class="mg-fold"><text>展开</text><view class="arrow arrow-d"></view></view>
+        </view>
+      </block>
+
+      <block wx:else>
+        <view class="mg-head">
+          <text class="mg-m {{item.cur ? 'cur' : ''}}">{{item.name}}</text>
+          <text class="mg-n">{{item.n}} 项</text>
+          <text class="mg-now" wx:if="{{item.cur}}">当前</text>
+        </view>
+
+        <view
+          wx:for="{{item.rows}}"
+          wx:for-item="row"
+          wx:key="id"
+          class="ci {{row.open ? 'open' : ''}}"
+          data-id="{{row.id}}"
+          bindtap="onToggle"
+          hover-class="tap-row"
+        >
+          <view class="ci-top">
+            <text class="lv lv-{{row.level}}">{{row.level}}</text>
+            <text class="ci-name">{{row.name}}</text>
+            <view class="ci-star {{row.isFav ? 'on' : ''}}" data-id="{{row.id}}" catchtap="onToggleFav" hover-class="tap-press">
+              <image class="star-img" src="{{row.isFav ? '/images/icons/star-on.png' : '/images/icons/star.png'}}" mode="aspectFit"></image>
+            </view>
+          </view>
+
+          <view class="ci-meta">
+            <text class="ci-time">{{row.span}}</text>
+            <text class="ci-st st-{{row.state}}">{{row.stateLabel}}</text>
+          </view>
+
+          <view class="ci-dept">{{row.deptLabel}}</view>
+
+          <view class="ci-body" wx:if="{{row.open}}">
+            <view class="kv">
+              <text class="k">赛程</text>
+              <text class="v">{{row.detail}}</text>
+            </view>
+            <view class="kv" wx:if="{{row.note}}">
+              <text class="k">说明</text>
+              <text class="v">{{row.note}}</text>
+            </view>
+            <view class="kv">
+              <text class="k">来源</text>
+              <text class="v">{{row.source}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+
+    </view>
+  </view>
+
+  <view class="empty" wx:if="{{!groups.length}}">{{level === 'fav' ? '还没关注赛事。点卡片右上角星标即可关注。' : '这个条件下没有赛事，换个院部看看。'}}</view>
+
+  <view class="foot">
+    <view class="f-toggle" bindtap="onToggleFoot" hover-class="tap-press">
+      <text class="f-t">数据说明</text>
+      <view class="caret {{footOpen ? 'up' : ''}}"><view class="arrow arrow-d"></view></view>
+    </view>
+    <view class="f-body" wx:if="{{footOpen}}">
+      <view class="f-p">院部那一栏只说明由哪个院负责组织，不是报名门槛，全校同学都能参加。写「暂未指定院部」的，是今年还没定组织院部，赛事仍在名单内。</view>
+      <view class="f-p">赛程按公开渠道核对至 2026-11-15。承办院部为示例数据，接入时按本校机构替换。</view>
+      <view class="f-p">标「去年时间」的，2026 年官方通知还没发，按 2025 年实际举办月份排，只作参考，以今年组委会通知为准。</view>
+      <view class="f-p">标「时间待定」的，两年都没查到公开日期，不代表赛事取消。</view>
+      <view class="f-p">报名前再核对一次赛事官方渠道。</view>
+    </view>
+  </view>
+
+</view>
+
+<view class="mask {{deptLeaving ? 'leaving' : ''}}" wx:if="{{deptOpen}}" bindtap="onCloseDept"></view>
+<view class="sheet {{deptLeaving ? 'leaving' : ''}}" wx:if="{{deptOpen}}">
+  <view class="sheet-h">按组织院部筛</view>
+  <view class="sheet-tip">院部只说明由谁组织，全校同学都能报名。</view>
+  <scroll-view class="sheet-b" scroll-y="true">
+    <view class="d-item {{dept === 'all' ? 'on' : ''}}" data-dept="all" bindtap="onPickDept" hover-class="tap-row">
+      <text>全部院部</text>
+      <text class="d-n">{{total}}</text>
+    </view>
+    <view
+      wx:for="{{depts}}"
+      wx:key="name"
+      class="d-item {{dept === item.name ? 'on' : ''}}"
+      data-dept="{{item.name}}"
+      bindtap="onPickDept" hover-class="tap-row">
+      <text>{{item.label}}</text>
+      <text class="d-n">{{item.n}}</text>
+    </view>
+  </scroll-view>
+</view>

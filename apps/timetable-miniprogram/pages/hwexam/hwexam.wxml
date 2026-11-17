@@ -1,0 +1,314 @@
+<view class="page">
+  <view class="seg">
+    <view class="seg-item {{tab === 'hw' ? 'on' : ''}}" data-t="hw" bindtap="onSwitchTab" hover-class="tap-press">
+      <text class="seg-t">作业</text>
+      <text class="seg-n" wx:if="{{sum.open}}">{{sum.open}}</text>
+    </view>
+    <view class="seg-item {{tab === 'exam' ? 'on' : ''}}" data-t="exam" bindtap="onSwitchTab" hover-class="tap-press">
+      <text class="seg-t">考试</text>
+      <text class="seg-n" wx:if="{{exams.length}}">{{exams.length}}</text>
+    </view>
+  </view>
+
+  <!-- ===== 作业 ===== -->
+  <view class="seg-body {{fadeFlip ? 'fx-b' : 'fx-a'}}">
+  <block wx:if="{{tab === 'hw'}}">
+    <view class="sec-head">
+      <view class="sec-lead">
+        <view class="sec-mark"></view>
+        <text class="sec-title">待交作业</text>
+        <text class="sec-count" wx:if="{{openList.length}}">{{openList.length}}</text>
+      </view>
+    </view>
+
+    <block wx:for="{{groups}}" wx:key="key" wx:for-item="grp">
+      <view class="group-head">
+        <text class="group-label">{{grp.label}}</text>
+        <text class="group-num">{{grp.items.length}}</text>
+      </view>
+      <view class="list">
+        <view class="todo" wx:for="{{grp.items}}" wx:for-item="hw" wx:key="id">
+          <view class="todo-ck" data-id="{{hw.id}}" catchtap="onToggleDone" hover-class="tap-press">
+            <view class="ck-square"></view>
+          </view>
+          <view class="todo-body" data-id="{{hw.id}}" bindtap="onOpenHwForm" hover-class="tap-row">
+            <view class="todo-line1">
+              <text class="todo-course">{{hw.course}}</text>
+              <text class="todo-title">{{hw.title}}</text>
+            </view>
+            <view class="todo-line2">
+              <text class="todo-date" wx:if="{{hw.hasDue}}">{{hw.stamp}}</text>
+              <text class="todo-date" wx:else>没写截止</text>
+              <text class="todo-tag {{hw.over ? 'is-over' : ''}} {{hw.urgent ? 'is-urgent' : ''}}" wx:if="{{hw.hasDue}}">{{hw.left}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view class="empty" wx:if="{{!openList.length}}">
+      <view class="empty-title">{{doneList.length ? '都交了' : '还没记作业'}}</view>
+      <view class="empty-sub">{{doneList.length ? '有新作业点右下角加号' : '点右下角加号，手动填、粘贴或拍照识别'}}</view>
+    </view>
+
+    <view class="done-wrap" wx:if="{{doneList.length}}">
+      <view class="done-head" bindtap="onToggleDoneList" hover-class="tap-row">
+        <view class="done-arrow {{showDone ? 'up' : ''}}"></view>
+        <text class="done-title">已完成</text>
+        <text class="done-num">{{doneList.length}}</text>
+      </view>
+
+      <view class="list" wx:if="{{showDone}}">
+        <view class="todo done" wx:for="{{doneList}}" wx:key="id">
+          <view class="todo-ck" data-id="{{item.id}}" catchtap="onToggleDone" hover-class="tap-press">
+            <view class="ck-square on">
+              <view class="ck-tick"></view>
+            </view>
+          </view>
+          <view class="todo-body" data-id="{{item.id}}" bindtap="onOpenHwForm" hover-class="tap-row">
+            <view class="todo-line1">
+              <text class="todo-course">{{item.course}}</text>
+              <text class="todo-title">{{item.title}}</text>
+            </view>
+            <view class="todo-line2">
+              <text class="todo-date">{{item.dueText}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- ===== 考试 ===== -->
+  <block wx:else>
+    <view class="scan" wx:if="{{scan.on}}">
+      <view class="scan-track">
+        <view class="scan-fill" style="width: {{scan.pct}}%"></view>
+      </view>
+      <text class="scan-label">{{scan.label}}</text>
+    </view>
+
+    <view class="sec-head">
+      <view class="sec-lead">
+        <view class="sec-mark"></view>
+        <text class="sec-title">考试安排</text>
+        <text class="sec-count" wx:if="{{exams.length}}">{{exams.length}}</text>
+      </view>
+    </view>
+
+    <view class="list" wx:if="{{exams.length}}">
+      <view class="todo ex" wx:for="{{exams}}" wx:key="id" data-id="{{item.id}}"
+        bindtap="onOpenExamForm" hover-class="tap-row">
+        <view class="ex-bar" style="background:var({{item.color}})"></view>
+        <view class="todo-body">
+          <view class="todo-line1">
+            <text class="todo-title">{{item.course}}</text>
+          </view>
+          <view class="todo-line2">
+            <text class="todo-date">{{item.stamp}} {{item.time}}</text>
+            <text class="todo-meta" wx:if="{{item.place}}">{{item.place}}</text>
+          </view>
+        </view>
+        <view class="ex-cd {{item.soon ? 'soon' : ''}}">{{item.cdText}}</view>
+      </view>
+    </view>
+
+    <view class="empty" wx:else>
+      <view class="empty-title">没加考试</view>
+      <view class="empty-sub">点右下角加号，加一场就会在这儿显示还有几天</view>
+    </view>
+  </block>
+  </view>
+
+  <view class="bottom-gap {{undo ? 'with-undo' : ''}}"></view>
+
+  <!-- 撤销条 -->
+  <view class="undo {{undoLeaving ? 'leaving' : ''}}" wx:if="{{undo}}">
+    <view class="undo-ck"><view class="undo-ck-tick"></view></view>
+    <text class="undo-text">「{{undo.title}}」已标成交了</text>
+    <view class="undo-btn" bindtap="onUndo" hover-class="tap-press">撤销</view>
+  </view>
+
+  <!-- 悬浮加号菜单 -->
+  <view class="fab-mask {{fabOpen ? 'show' : ''}}" bindtap="onCloseFab"></view>
+  <view class="fab-menu {{fabOpen ? 'show' : ''}}">
+    <block wx:if="{{tab === 'hw'}}">
+      <view class="fab-item" data-action="hwManual" bindtap="onFabAction" hover-class="tap-press">
+        <text class="fab-label">手动填写</text>
+      </view>
+      <view class="fab-item" data-action="hwPaste" bindtap="onFabAction" hover-class="tap-press">
+        <text class="fab-label">粘贴录入</text>
+      </view>
+      <view class="fab-item" data-action="hwScan" bindtap="onFabAction" hover-class="tap-press">
+        <text class="fab-label">拍照识别</text>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="fab-item" data-action="examManual" bindtap="onFabAction" hover-class="tap-press">
+        <text class="fab-label">手动加考试</text>
+      </view>
+      <view class="fab-item" data-action="examPaste" bindtap="onFabAction" hover-class="tap-press">
+        <text class="fab-label">粘贴录入</text>
+      </view>
+      <view class="fab-item" data-action="examScan" bindtap="onFabAction" hover-class="tap-press">
+        <text class="fab-label">拍照识别</text>
+      </view>
+    </block>
+  </view>
+  <view class="fab {{fabOpen ? 'open' : ''}} {{fabHidden ? 'hide' : ''}}" bindtap="onToggleFab" hover-class="press-brand">
+    <view class="fab-plus"></view>
+  </view>
+
+  <view class="mask {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind}}" bindtap="onCloseSheet"></view>
+
+  <view class="sheet {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'hwForm'}}">
+    <view class="sheet-title">{{hwForm.id ? '改作业' : '加作业'}}</view>
+
+    <view class="field">
+      <text class="field-label">课程</text>
+      <input class="field-input" value="{{hwForm.course}}" data-f="course" bindinput="onHwInput"
+        placeholder="如 数学分析III" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">标题</text>
+      <input class="field-input" value="{{hwForm.title}}" data-f="title" bindinput="onHwInput"
+        placeholder="如 习题3.1 第1-8题" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">截止</text>
+      <picker class="pk" mode="date" value="{{hwForm.dueDate}}" bindchange="onHwDate">
+        <view class="field-picker {{hwForm.dueDate ? '' : 'ph'}}">{{hwForm.dueDate || '选日期'}}</view>
+      </picker>
+      <picker class="pk" mode="time" value="{{hwForm.dueTime}}" bindchange="onHwTime">
+        <view class="field-picker {{hwForm.dueTime ? '' : 'ph'}}">{{hwForm.dueTime || '选时间'}}</view>
+      </picker>
+      <view class="field-clear" wx:if="{{hwForm.dueDate}}" bindtap="onClearDue" hover-class="tap-press">清除</view>
+    </view>
+
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+      <view class="sheet-btn primary" bindtap="onSaveHw" hover-class="press-brand">保存</view>
+    </view>
+
+    <view class="sheet-del" wx:if="{{hwForm.id}}" bindtap="onDeleteHwFromForm" hover-class="tap-press">删除这条作业</view>
+  </view>
+
+  <view class="sheet paste {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'hwPaste'}}">
+    <view class="sheet-title">{{pasteList.length ? '核对认出的作业' : '加作业'}}</view>
+    <view class="sheet-hint">拍截图、粘剪贴板、自己打，三种都行。一行课程、一行标题、一行截止；连着几门课发过来也能拆开。认完逐条核对，不要的点右边叉。</view>
+
+    <textarea class="paste-area" value="{{pasteText}}" bindinput="onPasteInput" maxlength="-1"
+      placeholder="数学分析 / 17.3-17.4 / 开始时间 11-10 13:19 截止时间 11-15 22:19" />
+
+    <view class="paste-btns">
+      <view class="paste-btn ghost" bindtap="onPasteFromClipboard" hover-class="tap-press">从剪贴板贴上</view>
+      <view class="paste-btn ghost" bindtap="onScanHw" hover-class="tap-press">拍通知截图（可多选）</view>
+      <view class="paste-btn primary" bindtap="onParsePaste" hover-class="press-brand">识别</view>
+    </view>
+
+    <view class="scan" wx:if="{{scan.on}}">
+      <view class="scan-track">
+        <view class="scan-fill" style="width: {{scan.pct}}%"></view>
+      </view>
+      <text class="scan-label">{{scan.label}}</text>
+    </view>
+
+    <view class="pv-list" wx:if="{{pasteList.length}}">
+      <view class="pv-row" wx:for="{{pasteList}}" wx:key="idx">
+        <view class="pv-dot" style="background:var({{item.color}})"></view>
+        <view class="pv-line">
+          <text class="pv-c">{{item.course}}</text>
+          <text class="pv-t">{{item.title}}</text>
+          <text class="pv-tag" wx:if="{{item.infer}}">推算</text>
+          <text class="pv-tag" wx:if="{{item.guess}}">猜的</text>
+          <text class="pv-d">{{item.stamp}}</text>
+        </view>
+        <view class="pv-del" data-idx="{{item.idx}}" catchtap="onRemovePasteItem" hover-class="tap-press"></view>
+      </view>
+    </view>
+
+    <view class="pv-warn" wx:if="{{pasteSkipped}}">有 {{pasteSkipped}} 段没读出时间或标题，没算进来。</view>
+
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+      <view class="sheet-btn primary" bindtap="onSavePaste" hover-class="press-brand">{{pasteList.length ? '加入 ' + pasteList.length + ' 条' : '加入'}}</view>
+    </view>
+  </view>
+
+  <view class="sheet paste {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'examPaste'}}">
+    <view class="sheet-title">{{examPasteList.length ? '核对认出的考试' : '加考试'}}</view>
+    <view class="sheet-hint">拍考试详情截图、粘剪贴板、自己打，三种都行，截图可一次选多张。考试名称、考试时间（开始 至 截止）认完逐条核对，不要的点右边叉。</view>
+
+    <textarea class="paste-area" value="{{examPasteText}}" bindinput="onExamPasteInput" maxlength="-1"
+      placeholder="考试名称：微积分启蒙&#10;考试时间：10-29 00:00 至 2027-01-15 23:59" />
+
+    <view class="paste-btns">
+      <view class="paste-btn ghost" bindtap="onExamPasteFromClipboard" hover-class="tap-press">从剪贴板贴上</view>
+      <view class="paste-btn ghost" bindtap="onScanExam" hover-class="tap-press">拍考试截图（可多选）</view>
+      <view class="paste-btn primary" bindtap="onParseExamPaste" hover-class="press-brand">识别</view>
+    </view>
+
+    <view class="pv-list" wx:if="{{examPasteList.length}}">
+      <view class="pv-row" wx:for="{{examPasteList}}" wx:key="idx">
+        <view class="pv-dot" style="background:var({{item.color}})"></view>
+        <view class="pv-line col">
+          <input class="pv-course" value="{{item.course}}" data-idx="{{item.idx}}" data-f="course"
+            bindinput="onExamPasteInput" placeholder="没填课程" />
+          <view class="pv-meta">
+            <picker class="pv-pk" mode="date" value="{{item.date}}" data-idx="{{item.idx}}" bindchange="onExamPasteDate">
+              <view class="pv-field {{item.date ? '' : 'ph'}}">{{item.date || '选日期'}}</view>
+            </picker>
+            <picker class="pv-pk" mode="time" value="{{item.time}}" data-idx="{{item.idx}}" bindchange="onExamPasteTime">
+              <view class="pv-field {{item.time ? '' : 'ph'}}">{{item.time || '时刻'}}</view>
+            </picker>
+            <text class="pv-tag" wx:if="{{item.guess}}">推算</text>
+            <text class="pv-t" wx:if="{{item.place}}">{{item.place}}</text>
+          </view>
+        </view>
+        <view class="pv-del" data-idx="{{item.idx}}" catchtap="onRemoveExamPasteItem" hover-class="tap-press"></view>
+      </view>
+    </view>
+
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+      <view class="sheet-btn primary" bindtap="onSaveExamPaste" hover-class="press-brand">{{examPasteList.length ? '加入 ' + examPasteList.length + ' 场' : '加入'}}</view>
+    </view>
+  </view>
+
+  <view class="sheet {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'examForm'}}">
+    <view class="sheet-title">{{examForm.id ? '改考试' : '加考试'}}</view>
+
+    <view class="field">
+      <text class="field-label">课程</text>
+      <input class="field-input" value="{{examForm.course}}" data-f="course" bindinput="onExamInput"
+        placeholder="如 大学物理B" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">日期</text>
+      <picker class="pk" mode="date" value="{{examForm.date}}" bindchange="onExamDate">
+        <view class="field-picker {{examForm.date ? '' : 'ph'}}">{{examForm.date || '选日期'}}</view>
+      </picker>
+      <picker class="pk" mode="time" value="{{examForm.time}}" bindchange="onExamTime">
+        <view class="field-picker {{examForm.time ? '' : 'ph'}}">{{examForm.time || '选时间'}}</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <text class="field-label">考场</text>
+      <input class="field-input" value="{{examForm.place}}" data-f="place" bindinput="onExamInput"
+        placeholder="可不填" />
+    </view>
+
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+      <view class="sheet-btn primary" bindtap="onSaveExam" hover-class="press-brand">保存</view>
+    </view>
+
+    <view class="sheet-del" wx:if="{{examForm.id}}" bindtap="onDeleteExam" hover-class="tap-press">删除这场考试</view>
+  </view>
+</view>
+
+<canvas type="2d" id="ocrCanvas" class="ocr-canvas"></canvas>

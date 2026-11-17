@@ -1,0 +1,464 @@
+.page {
+  padding: 36rpx 32rpx 40rpx;
+}
+
+/* ---------- 标题区 ---------- */
+
+.hero {
+  padding: 0 4rpx;
+}
+
+.hero-title {
+  font-size: 42rpx;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 1rpx;
+}
+
+.hero-sub {
+  margin-top: 10rpx;
+  font-size: 23rpx;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ---------- 统计概览（兼任一级筛选） ---------- */
+
+.stat-card {
+  display: flex;
+  margin-top: 24rpx;
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 28rpx 0;
+  box-shadow: 0 2rpx 12rpx rgba(26, 30, 28, 0.04);
+}
+
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.stat-num {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.stat.on .stat-num {
+  color: var(--brand);
+}
+
+.stat.on .stat-label {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+/* ---------- 二级筛选条 ---------- */
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24rpx;
+  padding: 0 4rpx;
+}
+
+.bar-tip {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.dept-btn {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  max-width: 220rpx;
+  padding: 14rpx 18rpx;
+  border-radius: 10rpx;
+  background: var(--brand-soft);
+}
+
+.dbt {
+  font-size: 22rpx;
+  color: var(--brand);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.caret {
+  flex: none;
+  display: flex;
+  align-items: center;
+  color: var(--brand);
+  transition: transform 0.18s;
+}
+
+.caret.up {
+  transform: rotate(180deg);
+}
+
+/* ---------- 分组列表 ---------- */
+
+.groups {
+  margin-top: 12rpx;
+}
+
+.mg {
+  margin-top: 32rpx;
+}
+
+.mg-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10rpx;
+  padding: 0 4rpx;
+}
+
+.mg-head.fold {
+  align-items: baseline;
+}
+
+.mg-fold {
+  margin-left: 10rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  font-size: 20rpx;
+  color: var(--muted);
+}
+
+.mg-m {
+  font-size: 29rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.mg-m.cur {
+  color: var(--brand);
+}
+
+.mg-m.muted {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.mg-n {
+  font-size: 20rpx;
+  color: var(--muted);
+}
+
+.mg-now {
+  margin-left: auto;
+  padding: 1rpx 12rpx;
+  border-radius: 6rpx;
+  background: var(--brand-soft);
+  font-size: 18rpx;
+  color: var(--brand);
+}
+
+/* ---------- 赛事卡 ---------- */
+
+.ci {
+  margin-top: 16rpx;
+  padding: 20rpx 22rpx 18rpx;
+  background: var(--card);
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(26, 30, 28, 0.04);
+}
+
+.ci.open {
+  box-shadow: 0 3rpx 16rpx rgba(46, 107, 87, 0.09);
+}
+
+.ci-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12rpx;
+}
+
+.lv {
+  flex: none;
+  width: 30rpx;
+  height: 30rpx;
+  margin-top: 4rpx;
+  border-radius: 6rpx;
+  font-size: 20rpx;
+  line-height: 30rpx;
+  text-align: center;
+  font-weight: 600;
+}
+
+.lv-A {
+  color: var(--brand);
+  background: var(--brand-soft);
+}
+
+.lv-B {
+  color: #A9761A;
+  background: #F8EDD8;
+}
+
+.ci-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 27rpx;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+.ci-star {
+  flex: none;
+  width: 88rpx;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: -24rpx -30rpx -26rpx 0;
+}
+
+.star-img {
+  width: 32rpx;
+  height: 32rpx;
+}
+
+.ci-star.on .star-img {
+  animation: star-pop 0.26s ease-out;
+}
+
+@keyframes star-pop {
+  0% { transform: scale(0.8); }
+  55% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.ci-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 12rpx;
+  padding-left: 42rpx;
+}
+
+.ci-time {
+  font-size: 22rpx;
+  color: var(--brand);
+  line-height: 1.5;
+}
+
+.ci-st {
+  padding: 2rpx 12rpx;
+  border-radius: 6rpx;
+  font-size: 19rpx;
+  line-height: 1.6;
+}
+
+.st-ok {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.st-ref {
+  background: #F8EDD8;
+  color: #A9761A;
+}
+
+.st-none {
+  background: #F0EEE8;
+  color: #8A8578;
+}
+
+.ci-dept {
+  margin-top: 10rpx;
+  padding-left: 42rpx;
+  font-size: 21rpx;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ---------- 展开详情 ---------- */
+
+.ci-body {
+  margin-top: 14rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid var(--line);
+}
+
+.kv {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 8rpx;
+}
+
+.k {
+  flex: none;
+  width: 84rpx;
+  font-size: 20rpx;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.v {
+  flex: 1;
+  min-width: 0;
+  font-size: 22rpx;
+  color: #3C3A34;
+  line-height: 1.65;
+}
+
+/* ---------- 空态与页脚 ---------- */
+
+.empty {
+  padding: 80rpx 0;
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--muted);
+}
+
+.foot {
+  margin-top: 44rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid var(--line);
+}
+
+.f-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+}
+
+.f-t {
+  font-size: 21rpx;
+  color: var(--muted);
+}
+
+.f-body {
+  margin-top: 12rpx;
+}
+
+.f-p {
+  margin-bottom: 10rpx;
+  font-size: 21rpx;
+  color: #96918A;
+  line-height: 1.75;
+}
+
+/* ---------- 院部弹层 ---------- */
+
+.mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  background: rgba(28, 26, 22, 0.38);
+  animation: mask-in 0.2s ease-out;
+}
+
+.mask.leaving {
+  animation: mask-out 0.18s ease-in forwards;
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+  padding: 28rpx 0 40rpx;
+  background: var(--card);
+  border-radius: 20rpx 20rpx 0 0;
+  animation: sheet-in 0.24s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.sheet.leaving {
+  animation: sheet-out 0.18s ease-in forwards;
+}
+
+@keyframes mask-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes mask-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes sheet-in {
+  from { transform: translateY(140rpx); }
+  to { transform: translateY(0); }
+}
+
+@keyframes sheet-out {
+  from { transform: translateY(0); }
+  to { transform: translateY(140rpx); }
+}
+
+.sheet-h {
+  padding: 0 36rpx 16rpx;
+  font-size: 25rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.sheet-tip {
+  padding: 0 36rpx 20rpx;
+  font-size: 22rpx;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.sheet-b {
+  height: 56vh;
+  padding: 0 36rpx;
+}
+
+.d-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 26rpx 0;
+  border-bottom: 1rpx solid #F3EFE4;
+  font-size: 26rpx;
+  color: var(--ink);
+}
+
+.d-item.on {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.d-n {
+  font-size: 21rpx;
+  color: var(--muted);
+}
+
+.d-item.on .d-n {
+  color: var(--brand);
+}
+
+/* 筛选切换：列表整体淡入。两个等价关键帧交替，靠类名变化重启动画 */
+.fx-a { animation: seg-in-a 0.22s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+.fx-b { animation: seg-in-b 0.22s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+
+@keyframes seg-in-a {
+  from { opacity: 0; transform: translateY(8rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes seg-in-b {
+  from { opacity: 0; transform: translateY(8rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}

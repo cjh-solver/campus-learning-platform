@@ -1,0 +1,276 @@
+<view class="page {{days === 7 ? 'week7' : ''}} {{hasGrid ? '' : 'page-empty'}}">
+  <view class="board">
+    <view class="hero">
+      <view class="hero-top">
+        <view class="h-btn" bindtap="onPrev" hover-class="tap-row"><view class="arrow arrow-l"></view></view>
+        <view class="h-title">
+          <view class="h-main">{{heroMain}}</view>
+          <view class="h-sub">{{heroSub}}</view>
+        </view>
+        <view class="h-btn" bindtap="onNext" hover-class="tap-row"><view class="arrow arrow-r"></view></view>
+        <view class="h-pill" bindtap="onToggleWeekend" hover-class="tap-accent">{{weekend ? '收起周末' : '含周末'}}</view>
+      </view>
+      <view class="kb-note" wx:if="{{kbNote}}">{{kbNote}}</view>
+    </view>
+
+    <view class="swipe" wx:if="{{hasGrid}}"
+      bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd">
+      <view class="fixed-col">
+        <view class="head-time"><view class="ht-label">节次</view></view>
+        <view class="period-col">
+          <view class="period {{item.n === 5 || item.n === 9 ? 'break' : ''}} {{item.n === currentPeriod && todayIsView ? 'current' : ''}}" wx:for="{{periods}}" wx:key="n">
+            <view class="p-n">{{item.n}}</view>
+            <view class="p-t">{{item.t}}</view>
+            <view class="p-t">{{item.e}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="track" style="transform: translateX({{trackX}}px); transition: {{trackAnim}}">
+        <view class="pane {{index === 0 ? 'pane-prev' : index === 2 ? 'pane-next' : ''}}" wx:for="{{panes}}" wx:key="week" wx:for-item="pane">
+          <view class="head-row">
+            <view class="head-day {{h.today ? 'today' : ''}}" wx:for="{{pane.heads}}" wx:key="day" wx:for-item="h">
+              <view class="hd-label">{{h.label}}</view>
+              <view class="hd-date">{{h.date}}</view>
+            </view>
+          </view>
+          <view class="day-cols">
+            <view class="day-col {{h.today ? 'today' : ''}}" wx:for="{{pane.heads}}" wx:key="day" wx:for-item="h">
+              <view class="{{item.n % 2 === 0 ? 'cell pair-end' : 'cell'}} {{h.today && todayIsView && item.n === currentPeriod ? 'current' : ''}}" wx:for="{{periods}}" wx:key="n" data-day="{{h.day}}" data-start="{{item.n}}" bindtap="onCellTap" hover-class="tap-row">
+                <view class="cell-plus"></view>
+              </view>
+            </view>
+            <view
+              class="block {{item.dense ? 'dense' : ''}} {{item.exKind === 'cancel' ? 'ex-cancel' : ''}} {{item.exKind === 'move' ? 'ex-move' : ''}} {{item.exKind === 'add' ? 'ex-add' : ''}}"
+              wx:for="{{pane.blocks}}"
+              wx:key="id"
+              data-id="{{item.id}}"
+              bindtap="onLessonTap"
+              style="left:{{item.left}}%;width:{{item.w}}%;top:{{item.top}}rpx;height:{{item.height}}rpx;background-color:var({{item.color}})" hover-class="tap-press">
+              <view class="b-tag" wx:if="{{item.exKind === 'move'}}">调</view>
+              <view class="b-tag" wx:if="{{item.exKind === 'add'}}">补</view>
+              <view class="b-name">{{item.nameText}}</view>
+              <view class="b-meta" wx:if="{{item.roomText || item.teacherText}}">
+                <view class="b-sub" wx:if="{{item.roomText}}">{{item.roomText}}</view>
+                <view class="b-sub" wx:if="{{item.teacherText}}">{{item.teacherText}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:else>
+      <view class="empty-icon"><view class="ei-cal"></view></view>
+      <view class="et">{{role === 'teacher' ? '还没选老师' : '还没有课表'}}</view>
+      <view class="es">{{role === 'teacher' ? '选一位老师，看他这学期在哪些班、哪些教室上课' : '班里发的 xls、xlsx、docx 都行，导一次以后每次打开就落在本周'}}</view>
+      <view class="role-switch in-empty">
+        <view class="rs-item {{role === 'student' ? 'on' : ''}}" data-role="student" bindtap="onRoleSwitch" hover-class="tap-press">学生</view>
+        <view class="rs-item {{role === 'teacher' ? 'on' : ''}}" data-role="teacher" bindtap="onRoleSwitch" hover-class="tap-press">老师</view>
+      </view>
+      <view class="empty-btn" bindtap="onMainAction" hover-class="press-brand">{{role === 'teacher' ? '找老师' : '选班级'}}</view>
+      <view class="empty-links">
+        <view class="el-btn" bindtap="onSubAction" hover-class="tap-press">导入课表</view>
+        <view class="el-btn" bindtap="onOpenPaste" hover-class="tap-press">粘贴导入</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 身份切换：有课表后仍可切学生/老师；回本周键同行靠右 -->
+  <view class="role-row" wx:if="{{hasGrid}}">
+    <view class="role-switch">
+      <view class="rs-item {{role === 'student' ? 'on' : ''}}" data-role="student" bindtap="onRoleSwitch" hover-class="tap-press">学生</view>
+      <view class="rs-item {{role === 'teacher' ? 'on' : ''}}" data-role="teacher" bindtap="onRoleSwitch" hover-class="tap-press">老师</view>
+    </view>
+    <view class="week-back" wx:if="{{farWeek}}" bindtap="onBackCur" hover-class="tap-press">
+      <view class="wb-btn">回到本周</view>
+    </view>
+  </view>
+
+  <!-- 底栏：有课表后才出现 -->
+  <view class="foot" wx:if="{{hasGrid}}">
+    <view class="f-left">
+      <view class="f-import" bindtap="onMainAction" hover-class="press-brand">
+        <text class="fi-word on">{{role === 'teacher' ? '找老师' : '选班级'}}</text>
+      </view>
+      <view class="f-kb" bindtap="onSubAction" hover-class="tap-press">
+        <text class="fi-word on">导入课表</text>
+      </view>
+    </view>
+    <view class="f-link" bindtap="onOpenPaste" hover-class="tap-press">粘贴</view>
+  </view>
+
+  <view class="mask {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind}}" bindtap="onCloseSheet"></view>
+
+  <!-- 选班级：学院 → 专业 → 班级，逐级点，选完就地换掉整张课表 -->
+  <view class="sheet class-sheet {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'class'}}">
+    <view class="cs-head">
+      <view class="cs-back" wx:if="{{pickStep !== 'col'}}" bindtap="onPickBack" hover-class="tap-press"><view class="arrow arrow-l"></view><text>上一级</text></view>
+      <view class="cs-title">{{pickTitle}}</view>
+      <view class="cs-close" bindtap="onCloseSheet" hover-class="tap-accent">取消</view>
+    </view>
+    <scroll-view class="cs-scroll" scroll-y>
+      <view class="cs-line" wx:for="{{pickList}}" wx:key="name" bindtap="onPickItem" data-i="{{index}}" hover-class="tap-row">
+        <text class="cs-name">{{item.name}}</text>
+        <text class="cs-n" wx:if="{{item.count}}">{{item.count}}</text>
+        <view class="cs-arrow" wx:if="{{item.kind !== 'class'}}"><view class="arrow arrow-r"></view></view>
+      </view>
+      <view class="cs-empty" wx:if="{{!pickList.length}}">这个下面没有班级</view>
+    </scroll-view>
+  </view>
+
+  <!-- 找老师：输入姓名筛，默认按拼音排前 60 位 -->
+  <view class="sheet class-sheet {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'teacher'}}" style="bottom: {{kbHeight}}px; max-height: min(70vh, calc(100vh - {{kbHeight}}px - 16rpx));">
+    <view class="cs-head">
+      <view class="cs-title">找老师</view>
+      <view class="cs-close" bindtap="onCloseSheet" hover-class="tap-accent">取消</view>
+    </view>
+    <view class="tq-wrap">
+      <input class="tq-input" value="{{teacherQuery}}" bindinput="onTeacherQuery"
+        placeholder="输入姓名，两三个字就够" placeholder-class="tq-ph" confirm-type="search" adjust-position="{{false}}" />
+    </view>
+    <view class="tq-count">{{teacherTotal}} 位{{teacherQuery ? '匹配' : '在职'}}{{teacherMore > 0 ? '，下面显示前 60 位' : ''}}</view>
+    <scroll-view class="cs-scroll" scroll-y>
+      <view class="cs-line" wx:for="{{teacherList}}" wx:key="*this" bindtap="onPickTeacher" data-name="{{item}}" hover-class="tap-row">
+        <text class="cs-name">{{item}}</text>
+        <view class="cs-arrow"><view class="arrow arrow-r"></view></view>
+      </view>
+      <view class="cs-empty" wx:if="{{!teacherList.length}}">没找到这个名字，换个字试试</view>
+    </scroll-view>
+  </view>
+
+  <!-- 班级课表点开的课程，和普通课程一样能编辑删除 -->
+  <view class="sheet {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'action'}}">
+    <view class="sheet-title">{{actionLesson.name}}</view>
+    <view class="sheet-meta" wx:if="{{actionLesson.roomText || actionLesson.teacherText}}">{{actionLesson.roomText || '教室待补'}} · {{actionLesson.teacherText || '教师待补'}}</view>
+    <view class="sheet-btn" wx:if="{{role === 'student'}}" bindtap="onEditFromAction" hover-class="tap-press">编辑</view>
+    <view class="sheet-btn" bindtap="onMoveFromAction" hover-class="tap-press">调到其他时间</view>
+    <view class="sheet-btn" bindtap="onCancelFromAction" hover-class="tap-press">本周停课</view>
+    <view class="sheet-btn" wx:if="{{role === 'student'}}" bindtap="onHideFromAction" hover-class="tap-press">隐藏本节</view>
+    <view class="sheet-btn danger" wx:if="{{role === 'student'}}" bindtap="onDeleteFromAction" hover-class="tap-press">删除</view>
+    <view class="sheet-btn" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+  </view>
+
+  <!-- 例外块点开：停课 / 调课 / 临时加课，只能撤销 -->
+  <view class="sheet {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'exView'}}">
+    <view class="sheet-title">{{actionLesson.name}}</view>
+    <view class="sheet-meta">{{actionLesson.exKind === 'cancel' ? '本周停课' : (actionLesson.exKind === 'add' ? '临时加课' : '调课安排')}}</view>
+    <view class="kv"><text class="k">位置</text><text class="v">周{{actionLesson.day}} 第 {{actionLesson.start}}–{{actionLesson.start + actionLesson.len - 1}} 节</text></view>
+    <view class="sheet-btn danger" bindtap="onUndoException" hover-class="tap-press">撤销这条安排</view>
+    <view class="sheet-btn" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+  </view>
+
+  <!-- 调课：选目标周、星期、节次、教室 -->
+  <view class="sheet form {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'excMove'}}">
+    <view class="sheet-title">调课安排</view>
+    <view class="sheet-sub">第{{excForm.fromWeek}}周 周{{weekdays[excForm.fromDay - 1]}} 第{{excForm.fromStart}}节起，改到</view>
+    <view class="field">
+      <text class="field-label">目标周</text>
+      <picker range="{{weekOptions}}" value="{{excForm.toWeek - 1}}" bindchange="onExcWeekChange">
+        <view class="field-picker">{{weekOptions[excForm.toWeek - 1]}}</view>
+      </picker>
+    </view>
+    <view class="field">
+      <text class="field-label">星期</text>
+      <picker range="{{weekdays}}" value="{{excForm.toDay - 1}}" bindchange="onExcDayChange">
+        <view class="field-picker">{{weekdays[excForm.toDay - 1]}}</view>
+      </picker>
+    </view>
+    <view class="field-row">
+      <view class="field half">
+        <text class="field-label">起始节</text>
+        <picker range="{{startOptions}}" value="{{(excForm.toStart - 1) / 2}}" bindchange="onExcStartChange">
+          <view class="field-picker">第 {{excForm.toStart}}–{{excForm.toStart + excForm.toLen - 1}} 节</view>
+        </picker>
+      </view>
+      <view class="field half">
+        <text class="field-label">节数</text>
+        <picker range="{{lenOptions}}" value="{{(excForm.toLen - 2) / 2}}" bindchange="onExcLenChange">
+          <view class="field-picker">{{excForm.toLen}} 节{{excForm.toLen === 4 ? '连堂' : ''}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="field">
+      <text class="field-label">教室</text>
+      <input class="field-input" value="{{excForm.room}}" bindinput="onExcRoomInput" placeholder="可选，留空沿用原教室" />
+    </view>
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+      <view class="sheet-btn primary" bindtap="onSaveExcMove" hover-class="press-brand">保存调课</view>
+    </view>
+  </view>
+
+  <view class="sheet form {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'paste'}}">
+    <view class="sheet-title">粘贴导入课表</view>
+    <view class="sheet-sub">每行一门：周一|1-2|课程名|教师|教室|1-10周</view>
+
+    <textarea class="paste-area" value="{{pasteText}}" bindinput="onPasteInput" maxlength="-1"
+      placeholder="粘在这里，一行一门课"></textarea>
+
+    <view class="paste-tools">
+      <view class="paste-tool" bindtap="onPasteFromClipboard" hover-class="tap-press">从剪贴板贴上</view>
+      <view class="paste-tool" bindtap="onCopyPrompt" hover-class="tap-press">复制给 AI 的提示词</view>
+      <view class="paste-tool" bindtap="onParsePaste" hover-class="tap-press">认一下</view>
+    </view>
+
+    <view class="pv-list" wx:if="{{pasteList.length}}">
+      <view class="pv-item" wx:for="{{pasteList}}" wx:key="index">
+        <view class="pv-name">{{item.name}}</view>
+        <view class="pv-meta">周{{item.day}} 第{{item.start}}–{{item.start + item.len - 1}}节 · {{item.room || '教室待补'}}</view>
+      </view>
+    </view>
+
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+      <view class="sheet-btn primary" bindtap="onSavePaste" hover-class="press-brand">{{pasteList.length ? '导入 ' + pasteList.length + ' 门' : '导入'}}</view>
+    </view>
+  </view>
+
+  <view class="sheet form {{sheetLeaving ? 'leaving' : ''}}" wx:if="{{sheetKind === 'form'}}">
+    <view class="sheet-title">{{form.id ? '编辑课程' : '加一门课'}}</view>
+    <view class="sheet-sub" wx:if="{{formSlot}}">{{formSlot}}</view>
+    <view class="field">
+      <text class="field-label">课程名</text>
+      <input class="field-input" value="{{form.name}}" data-f="name" bindinput="onFormInput" placeholder="如 数学分析III" />
+    </view>
+    <view class="field" wx:if="{{role !== 'teacher'}}">
+      <text class="field-label">教师</text>
+      <input class="field-input" value="{{form.teacher}}" data-f="teacher" bindinput="onFormInput" placeholder="可选" />
+    </view>
+    <view class="field">
+      <text class="field-label">教室</text>
+      <input class="field-input" value="{{form.room}}" data-f="room" bindinput="onFormInput" placeholder="可选" />
+    </view>
+    <view class="field">
+      <text class="field-label">星期</text>
+      <picker range="{{weekdays}}" value="{{form.day - 1}}" bindchange="onDayChange">
+        <view class="field-picker">{{weekdays[form.day - 1]}}</view>
+      </picker>
+    </view>
+    <view class="field-row">
+      <view class="field half">
+        <text class="field-label">起始节</text>
+        <picker range="{{startOptions}}" value="{{(form.start - 1) / 2}}" bindchange="onStartChange">
+          <view class="field-picker">第 {{form.start}}–{{form.start + form.len - 1}} 节</view>
+        </picker>
+      </view>
+      <view class="field half">
+        <text class="field-label">节数</text>
+        <picker range="{{lenOptions}}" value="{{(form.len - 2) / 2}}" bindchange="onLenChange">
+          <view class="field-picker">{{form.len}} 节{{form.len === 4 ? '连堂' : ''}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="field" wx:if="{{!form.id && role !== 'teacher'}}" bindtap="onToggleOneWeek" hover-class="tap-row">
+      <text class="field-label">生效范围</text>
+      <view class="field-picker">{{form.oneWeek ? '只这一周' : '整学期'}}</view>
+    </view>
+    <view class="field" wx:if="{{!form.oneWeek}}">
+      <text class="field-label">周次</text>
+      <input class="field-input" value="{{form.weeks}}" data-f="weeks" bindinput="onFormInput" placeholder="如 1-10,12；留空视为全周" />
+    </view>
+    <view class="sheet-actions">
+      <view class="sheet-btn ghost" bindtap="onCloseSheet" hover-class="tap-press">取消</view>
+      <view class="sheet-btn primary" bindtap="onSaveForm" hover-class="press-brand">保存</view>
+    </view>
+  </view>
+</view>

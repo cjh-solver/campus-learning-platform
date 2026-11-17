@@ -1,0 +1,330 @@
+.page {
+  min-height: 100vh;
+  padding: 24rpx 24rpx 0;
+}
+
+/* 整组收进一张卡，避免格子散成孤岛 */
+.group {
+  background: var(--card);
+  border-radius: 28rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 12rpx rgba(26, 30, 28, 0.04);
+}
+
+.group-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 0 4rpx 4rpx;
+}
+
+.gh-t {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+}
+
+.gh-s {
+  font-size: 21rpx;
+  color: var(--muted);
+}
+
+/* 绝对定位网格：位置全在 transform 里，让位与重排都只改 transform */
+.grid {
+  position: relative;
+  width: 654rpx;
+}
+
+.cell {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 202rpx;
+  height: 196rpx;
+  border-radius: 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.22s cubic-bezier(0.25, 0.8, 0.3, 1), opacity 0.2s ease;
+  will-change: transform;
+}
+
+/* 按下态 */
+.cell-active {
+  opacity: 0.6;
+}
+
+/* 图标底 */
+.ic {
+  width: 68rpx;
+  height: 68rpx;
+  box-sizing: border-box;
+  border-radius: 20rpx;
+  background: var(--brand-soft, #E7F0EB);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 16rpx;
+}
+
+/* 成绩：三根等宽柱，底部基线对齐，高度递增 */
+.ic-grade {
+  align-items: flex-end;
+  padding-bottom: 16rpx;
+}
+
+.g-axis {
+  position: absolute;
+  left: 15rpx;
+  right: 15rpx;
+  bottom: 16rpx;
+  height: 3rpx;
+  border-radius: 2rpx;
+  background: var(--accent);
+}
+
+.g-bar {
+  width: 9rpx;
+  border-radius: 2rpx;
+  background: var(--accent);
+  margin: 0 4rpx;
+}
+
+.g1 {
+  height: 16rpx;
+}
+
+.g2 {
+  height: 28rpx;
+}
+
+.g3 {
+  height: 22rpx;
+}
+
+/* 倒计时：圆环 + 两根指针 + 中心点 */
+.cl-ring {
+  position: relative;
+  width: 34rpx;
+  height: 34rpx;
+  border: 3rpx solid var(--accent);
+  border-radius: 50%;
+}
+
+.cl-hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 3rpx;
+  border-radius: 2rpx;
+  background: var(--accent);
+  transform-origin: bottom center;
+}
+
+.cl-hand.h1 {
+  height: 11rpx;
+  transform: translateX(-50%);
+}
+
+.cl-hand.h2 {
+  height: 8rpx;
+  transform: translateX(-50%) rotate(55deg);
+}
+
+.cl-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4rpx;
+  height: 4rpx;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+}
+
+.pm-body {
+  position: relative;
+  width: 30rpx;
+  height: 27rpx;
+  border: 3rpx solid #D8443A;
+  border-radius: 48% 52% 50% 50%;
+  box-sizing: border-box;
+}
+
+.pm-leaf {
+  position: absolute;
+  top: -6rpx;
+  left: 50%;
+  width: 14rpx;
+  height: 8rpx;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translateX(-50%) rotate(-12deg);
+}
+
+/* 竞赛：奖杯杯身 + 双耳 + 颈 + 底座 */
+.ic-contest {
+  flex-direction: column;
+}
+
+.cup {
+  position: relative;
+  width: 28rpx;
+  height: 21rpx;
+  border: 3rpx solid var(--accent);
+  border-radius: 4rpx 4rpx 7rpx 7rpx;
+  box-sizing: border-box;
+}
+
+.cup-ear {
+  position: absolute;
+  top: 3rpx;
+  width: 9rpx;
+  height: 10rpx;
+  border: 3rpx solid var(--accent);
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.cup-ear.el {
+  left: -9rpx;
+}
+
+.cup-ear.er {
+  right: -9rpx;
+}
+
+.cup-neck {
+  width: 8rpx;
+  height: 6rpx;
+  background: var(--accent);
+  margin: 0 auto;
+}
+
+.cup-base {
+  width: 22rpx;
+  height: 4rpx;
+  background: var(--accent);
+  border-radius: 2rpx;
+  margin-top: 2rpx;
+}
+
+/* 空教室：门框 + 门把手 */
+.door-frame {
+  position: relative;
+  width: 28rpx;
+  height: 34rpx;
+  border: 3rpx solid var(--accent);
+  border-radius: 5rpx;
+  box-sizing: border-box;
+}
+
+.door-knob {
+  position: absolute;
+  right: 5rpx;
+  top: 50%;
+  width: 4rpx;
+  height: 4rpx;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-50%);
+}
+
+.pl-h {
+  position: absolute;
+  width: 22rpx;
+  height: 3rpx;
+  border-radius: 2rpx;
+  background: #B4B8B3;
+}
+
+.pl-v {
+  position: absolute;
+  width: 3rpx;
+  height: 22rpx;
+  border-radius: 2rpx;
+  background: #B4B8B3;
+}
+
+/* 文字 */
+.c-t {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.c-s {
+  margin-top: 6rpx;
+  font-size: 19rpx;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+/* 待开发：淡色虚线位 */
+.cell-ghost .ic {
+  background: #F3F0E6;
+}
+
+.cell-ghost {
+  border: 1rpx dashed #DED8C8;
+  box-sizing: border-box;
+}
+
+.c-t-ghost {
+  color: #9AA09A;
+  font-weight: 500;
+}
+
+.c-s-ghost {
+  color: #B4B8B3;
+}
+
+/* 被拖格在流内让出位置，视觉交给浮层，其余格依次补位 */
+.cell-lifted {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tip {
+  margin-top: 20rpx;
+  text-align: center;
+  font-size: 21rpx;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* 跟随手指的浮层，脱离文档流，只改 transform */
+.drag-layer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.dl-card {
+  position: fixed;
+  left: 0;
+  top: 0;
+  border-radius: 20rpx;
+  background: var(--card);
+  box-shadow: 0 14rpx 34rpx rgba(46, 107, 87, 0.2), 0 2rpx 6rpx rgba(46, 107, 87, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  will-change: transform;
+}
+
+/* 松手落位：浮层滑到目标槽位再收起 */
+.dl-settle {
+  transition: transform 0.18s cubic-bezier(0.25, 0.8, 0.3, 1);
+}

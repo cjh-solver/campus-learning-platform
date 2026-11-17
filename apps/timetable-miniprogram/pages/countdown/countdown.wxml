@@ -1,0 +1,111 @@
+<template name="cardBody">
+  <view class="c-head">
+    <text class="c-title">{{title}}</text>
+    <view class="c-meta">
+      <text class="c-date">{{dateText}}</text>
+      <view class="c-x" wx:if="{{!fixed && !options.length}}" catchtap="onRemove" data-id="{{id}}" hover-class="tap-press"></view>
+    </view>
+  </view>
+
+  <view class="c-body">
+    <view class="c-num {{flipOn ? 'flip-a' : 'flip-b'}}">
+      <text class="c-big {{sizeClass}}">{{big}}</text>
+      <text class="c-unit" wx:if="{{unit}}">{{unit}}</text>
+    </view>
+
+    <view class="c-weeks">
+      <view wx:for="{{weeks}}" wx:for-item="w" wx:key="index" class="wk {{w === 'h' ? 'h' : ''}}"></view>
+    </view>
+
+    <text class="c-tip">{{tip}}</text>
+
+    <view class="c-quote">{{quote}}</view>
+  </view>
+</template>
+
+<view class="page">
+
+  <view class="head">
+    <view class="h-t">倒计时</view>
+    <view class="h-s">左右滑换一张</view>
+  </view>
+
+  <swiper
+    class="deck"
+    current="{{current}}"
+    bindchange="onSwipe"
+    previous-margin="108rpx"
+    next-margin="108rpx"
+    duration="300"
+  >
+    <block wx:for="{{cards}}" wx:key="id">
+      <swiper-item>
+        <view
+          wx:if="{{item.options.length}}"
+          class="card t-{{item.tone}} {{item.off < 0 ? 'off-l' : (item.off > 0 ? 'off-r' : 'off-on')}}"
+          data-id="{{item.id}}"
+          bindtap="onPickOption"
+          hover-class="tap-row"
+        >
+          <template is="cardBody" data="{{...item, flipOn: flipOn}}" />
+        </view>
+
+        <picker
+          wx:else
+          mode="date"
+          value="{{item.pickerValue}}"
+          data-id="{{item.id}}"
+          bindchange="onPickDate"
+        >
+          <view class="card t-{{item.tone}} {{item.off < 0 ? 'off-l' : (item.off > 0 ? 'off-r' : 'off-on')}}" hover-class="tap-row">
+            <template is="cardBody" data="{{...item, flipOn: flipOn}}" />
+          </view>
+        </picker>
+      </swiper-item>
+    </block>
+
+    <swiper-item>
+      <view class="card add {{current >= cards.length ? 'off-on' : 'off-r'}}" bindtap="onAdd" hover-class="tap-row">
+        <view class="add-plus"></view>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <view class="dots">
+    <view wx:for="{{dots}}" wx:key="index" class="dot {{current === index ? 'on' : ''}}"></view>
+  </view>
+
+  <view class="note {{isAdd ? 'note-off' : ''}}" bindtap="onEditNote" hover-class="tap-row">
+    <view class="n-head">
+      <text class="n-title">对自己说的话</text>
+      <text class="n-edit" wx:if="{{!isAdd}}">{{note ? '改一句' : '写一句'}}</text>
+    </view>
+    <view class="n-body {{note ? '' : 'n-empty'}}">{{isAdd ? '选一张卡，这里就能写字了' : (note || '点这里，写一句给自己')}}</view>
+  </view>
+
+  <view class="src">日期来自中国教育考试网与教育部 2026-09-24 公告</view>
+
+</view>
+
+<view class="mask {{noteLeaving ? 'leaving' : ''}}" wx:if="{{editing}}" bindtap="onCancelNote">
+  <view class="panel {{noteLeaving ? 'leaving' : ''}}" catchtap="onNoop">
+    <textarea
+      class="p-input"
+      value="{{draft}}"
+      bindinput="onDraft"
+      maxlength="{{maxLen}}"
+      placeholder="写一句给自己的话"
+      placeholder-class="p-ph"
+      auto-height
+      focus="{{editing}}"
+      cursor-spacing="40"
+    />
+    <view class="p-bar">
+      <text class="p-count">{{draft.length}}/{{maxLen}}</text>
+      <view class="p-btns">
+        <text class="p-btn" bindtap="onCancelNote" hover-class="tap-press">取消</text>
+        <text class="p-btn p-ok" bindtap="onSaveNote" hover-class="tap-press">保存</text>
+      </view>
+    </view>
+  </view>
+</view>

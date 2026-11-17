@@ -1,0 +1,76 @@
+<view class="page">
+
+  <view class="head">
+    <view class="h-t">专注计时</view>
+    <view class="h-s">留一段完整的时间给自己</view>
+  </view>
+
+  <view class="modes">
+    <view
+      wx:for="{{modes}}"
+      wx:key="key"
+      class="mode {{mode === item.key ? 'on' : ''}}"
+      data-key="{{item.key}}"
+      bindtap="onSwitchMode" hover-class="tap-press">{{item.label}}</view>
+  </view>
+
+  <view class="stage {{state}}">
+    <view class="tomato-wrap">
+
+      <view class="tomato {{state === 'running' ? 'breathe' : ''}}">
+        <image class="calyx" src="/images/calyx.png" mode="aspectFit" style="position: absolute; left: 229rpx; top: -46rpx"></image>
+        <view class="shine"></view>
+        <view class="spot"></view>
+        <view class="pit">
+          <view class="clock {{flipOn ? 'flip-a' : 'flip-b'}}">{{clock}}</view>
+          <view class="state-label">{{stateLabel}}</view>
+        </view>
+      </view>
+
+      <view class="main-btn" bindtap="onPrimary" hover-class="press-red">{{primaryText}}</view>
+    </view>
+
+    <view class="picker-zone" wx:if="{{showPicker}}">
+      <view class="wheel-wrap">
+        <picker-view
+          class="wheel"
+          indicator-style="height: 64rpx;"
+          mask-style="background-image: linear-gradient(180deg, #FAF9F6 0%, rgba(250,249,246,0.88) 18%, rgba(250,249,246,0) 42%, rgba(250,249,246,0) 58%, rgba(250,249,246,0.88) 82%, #FAF9F6 100%);"
+          value="{{wheelVal}}"
+          bindchange="onWheel"
+        >
+          <picker-view-column>
+            <view
+              wx:for="{{minList}}"
+              wx:key="*this"
+              class="w-item {{wheelMin === item ? 'sel' : ''}}"
+            >{{item}}</view>
+          </picker-view-column>
+          <picker-view-column>
+            <view
+              wx:for="{{secList}}"
+              wx:key="v"
+              class="w-item {{wheelSec === item.v ? 'sel' : ''}}"
+            >{{item.label}}</view>
+          </picker-view-column>
+        </picker-view>
+        <view class="colon">:</view>
+      </view>
+
+      <view class="presets">
+        <view
+          wx:for="{{presets}}"
+          wx:key="*this"
+          class="preset {{wheelMin === item && wheelSec === 0 ? 'on' : ''}}"
+          data-min="{{item}}"
+          bindtap="onPreset" hover-class="tap-press">{{item}} 分</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="foot">
+    <view class="reset" wx:if="{{state !== 'idle'}}" bindtap="onReset" hover-class="tap-press">重置</view>
+    <view class="stats">今日 {{pomoCount}} 个 · 专注 {{focusMin}} 分钟</view>
+  </view>
+
+</view>

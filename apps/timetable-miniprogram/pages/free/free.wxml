@@ -1,0 +1,66 @@
+<view class="page">
+  <view class="card">
+    <view class="bar">
+      <view class="bar-main">
+        <view class="bar-title">第 {{week}} 周 · {{dayName}} 第 {{periodLabel}} 节</view>
+        <view class="bar-sub">{{weekRange}}</view>
+      </view>
+      <view class="bar-side">
+        <view class="st-btn" data-step="prev" bindtap="onWeekStep" hover-class="tap-press"><view class="arrow arrow-l"></view></view>
+        <view class="st-btn" data-step="next" bindtap="onWeekStep" hover-class="tap-press"><view class="arrow arrow-r"></view></view>
+      </view>
+    </view>
+
+    <view class="fld">
+      <view class="fld-k">星期</view>
+      <view class="chips-wrap">
+        <scroll-view class="chips" scroll-x enable-flex>
+          <view class="chips-in">
+            <view class="chip {{item.d === day ? 'on' : ''}}" wx:for="{{days}}" wx:key="d" data-d="{{item.d}}" bindtap="onPickDay" hover-class="tap-press">{{item.name}}</view>
+          </view>
+        </scroll-view>
+        <view class="chips-fade chips-fade-l"></view>
+        <view class="chips-fade chips-fade-r"></view>
+      </view>
+    </view>
+
+    <view class="fld">
+      <view class="fld-k">节次</view>
+      <view class="chips-wrap">
+        <scroll-view class="chips" scroll-x enable-flex>
+          <view class="chips-in">
+            <view class="chip num {{item.active ? 'on' : ''}}" wx:for="{{periods}}" wx:key="n" data-p="{{item.n}}" bindtap="onPickPeriod" hover-class="tap-press">{{item.n}}</view>
+          </view>
+        </scroll-view>
+        <view class="chips-fade chips-fade-l"></view>
+        <view class="chips-fade chips-fade-r"></view>
+      </view>
+    </view>
+
+    <view class="fld-foot">
+      <view class="fld-time">{{periodText}}</view>
+      <view class="fld-now" bindtap="onNow" hover-class="tap-press">回到现在</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="summary">教学楼还空着 {{total}} 间</view>
+
+    <block wx:for="{{groups}}" wx:key="name" wx:for-item="g">
+      <view class="grp-head">
+        <view class="grp-name">{{g.name}}</view>
+        <view class="grp-n">{{g.rooms.length}} 间</view>
+      </view>
+      <view class="rooms">
+        <view class="room" wx:for="{{g.rooms}}" wx:key="*this" wx:for-item="r">{{r}}</view>
+      </view>
+    </block>
+
+    <view class="empty" wx:if="{{!groups.length}}">
+      <view class="empty-t">这个时段没有空教室</view>
+      <view class="empty-s">教学楼都排满了，换个节次看看</view>
+    </view>
+
+    <view class="note">只列教学楼普通教室，操场、报告厅、AR 与 VR 等特殊场地共 {{otherCount}} 个未列出。数据截至 {{gen}}，临时调课以现场为准。</view>
+  </view>
+</view>

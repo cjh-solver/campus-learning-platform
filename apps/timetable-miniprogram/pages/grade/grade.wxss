@@ -1,0 +1,684 @@
+.page {
+  min-height: 100vh;
+  padding: 16rpx 24rpx 0;
+}
+
+/* 分类切换 */
+.seg {
+  display: flex;
+  gap: 8rpx;
+  padding: 6rpx;
+  background: var(--card);
+  border-radius: 20rpx;
+}
+
+.seg-btn {
+  flex: 1;
+  height: 80rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16rpx;
+  font-size: 26rpx;
+  color: var(--muted);
+  transition: background 0.2s, color 0.2s;
+}
+
+.seg-btn.on {
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* 汇总四格 */
+.sum {
+  display: flex;
+  margin-top: 24rpx;
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 32rpx 0;
+}
+
+.sum-cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10rpx;
+  border-right: 1rpx solid var(--line);
+}
+
+.sum-cell:last-child {
+  border-right: none;
+}
+
+.sum-num {
+  font-size: 42rpx;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.sum-num.bad {
+  color: #E5484D;
+}
+
+.sum-lab {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.empty-card {
+  margin-top: 24rpx;
+  background: var(--card);
+  border-radius: 20rpx;
+  padding: 48rpx 32rpx 44rpx;
+  text-align: center;
+}
+
+.empty-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.empty-sub {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* 空态唯一的实心主键 */
+.empty-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 88rpx;
+  margin-top: 28rpx;
+  padding: 0 44rpx;
+  border-radius: 44rpx;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* 其余录入方式：一行文字链 */
+.empty-links {
+  margin-top: 24rpx;
+  font-size: 24rpx;
+  color: var(--accent);
+  line-height: 1.6;
+}
+
+.el-link {
+  padding: 16rpx 0;
+}
+
+.el-sep {
+  margin: 0 14rpx;
+  color: #C7CDC6;
+}
+
+/* 图表卡 */
+.chart {
+  margin-top: 24rpx;
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 28rpx 28rpx 20rpx;
+}
+
+.chart-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+
+.chart-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.chart-sub {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.brow {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+  padding: 13rpx 0;
+}
+
+.bname {
+  width: 196rpx;
+  flex: none;
+  font-size: 24rpx;
+  color: var(--ink);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.btrack {
+  flex: 1;
+  min-width: 0;
+  height: 20rpx;
+  border-radius: 10rpx;
+  background: #F0F2EC;
+  overflow: hidden;
+}
+
+.bfill {
+  height: 100%;
+  border-radius: 10rpx;
+}
+
+.bfill.warm {
+  background: linear-gradient(90deg, #5B9B83, #2E6B57);
+}
+
+.bval {
+  width: 84rpx;
+  flex: none;
+  text-align: right;
+  font-size: 24rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* 分数段柱状 */
+.dist {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12rpx;
+  padding: 12rpx 4rpx 0;
+}
+
+.dcol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dval {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: var(--muted);
+  height: 30rpx;
+  line-height: 30rpx;
+}
+
+.dbar {
+  width: 72%;
+  min-height: 4rpx;
+  border-radius: 8rpx 8rpx 0 0;
+  background: var(--accent);
+}
+
+.dname {
+  margin-top: 12rpx;
+  font-size: 20rpx;
+  color: var(--muted);
+}
+
+/* 学期分组明细 */
+.gsec {
+  margin-top: 24rpx;
+  background: var(--card);
+  border-radius: 24rpx;
+  padding: 24rpx 28rpx 12rpx;
+}
+
+.ghead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 4rpx 0 14rpx;
+}
+
+.gterm {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.gmeta {
+  font-size: 21rpx;
+  color: var(--muted);
+}
+
+.grow {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 24rpx 0;
+  border-top: 1rpx solid var(--line);
+}
+
+.gmain {
+  flex: 1;
+  min-width: 0;
+}
+
+.gname {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.gsub {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+.gscore {
+  width: 84rpx;
+  flex: none;
+  text-align: right;
+  font-size: 34rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.gscore.f {
+  color: #E5484D;
+}
+
+.gdel {
+  position: relative;
+  width: 88rpx;
+  height: 88rpx;
+  flex: none;
+  margin: -16rpx -16rpx -16rpx -16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gdel::before,
+.gdel::after {
+  content: "";
+  position: absolute;
+  width: 28rpx;
+  height: 4rpx;
+  border-radius: 2rpx;
+  background: #7E857F;
+}
+
+.gdel::before {
+  transform: rotate(45deg);
+}
+
+.gdel::after {
+  transform: rotate(-45deg);
+}
+
+.records {
+  margin-top: 16rpx;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--muted);
+}
+
+/* 操作按钮 */
+/* 有数据后的录入底栏 */
+.foot {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  height: 112rpx;
+  padding: 0 24rpx calc(env(safe-area-inset-bottom));
+  box-sizing: content-box;
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  background: var(--card);
+  border-top: 1rpx solid var(--line);
+}
+
+.f-primary {
+  height: 72rpx;
+  padding: 0 32rpx;
+  border-radius: 20rpx;
+  background: var(--accent);
+  color: #FFFFFF;
+  font-size: 26rpx;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.f-secondary {
+  height: 72rpx;
+  padding: 0 32rpx;
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(46, 107, 87, 0.4);
+  color: var(--accent);
+  font-size: 26rpx;
+  display: flex;
+  align-items: center;
+}
+
+.f-link {
+  margin-left: auto;
+  font-size: 24rpx;
+  color: var(--muted);
+  padding: 12rpx 0 12rpx 24rpx;
+}
+
+.bottom-gap {
+  height: 48rpx;
+}
+
+.bottom-gap.with-foot {
+  height: calc(140rpx + env(safe-area-inset-bottom));
+}
+
+/* 弹层 */
+.mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 40;
+  animation: mask-in 0.2s ease-out;
+}
+
+.mask.leaving {
+  animation: mask-out 0.18s ease-in forwards;
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--card);
+  border-radius: 28rpx 28rpx 0 0;
+  padding: 24rpx 28rpx calc(32rpx + env(safe-area-inset-bottom));
+  z-index: 50;
+  animation: sheet-in 0.24s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.sheet.leaving {
+  animation: sheet-out 0.18s ease-in forwards;
+}
+
+@keyframes mask-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes mask-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes sheet-in {
+  from { transform: translateY(140rpx); }
+  to { transform: translateY(0); }
+}
+
+@keyframes sheet-out {
+  from { transform: translateY(0); }
+  to { transform: translateY(140rpx); }
+}
+
+.sheet-title {
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 12rpx 0 20rpx;
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  min-height: 96rpx;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.field-label {
+  width: 120rpx;
+  flex: none;
+  font-size: 26rpx;
+  color: var(--muted);
+}
+
+.field-input {
+  flex: 1;
+  font-size: 28rpx;
+  color: var(--ink);
+  padding: 24rpx 0;
+}
+
+.area {
+  width: 100%;
+  height: 300rpx;
+  margin-top: 16rpx;
+  padding: 20rpx 22rpx;
+  box-sizing: border-box;
+  border-radius: 16rpx;
+  background: var(--bg);
+  font-size: 25rpx;
+  color: var(--ink);
+  line-height: 1.6;
+}
+
+.area-tools {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14rpx;
+}
+
+.tool-btn {
+  height: 72rpx;
+  padding: 0 24rpx;
+  display: flex;
+  align-items: center;
+  border-radius: 14rpx;
+  background: var(--bg);
+  font-size: 24rpx;
+  color: var(--accent);
+}
+
+.prompt-tip {
+  font-size: 24rpx;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 18rpx;
+}
+
+.prompt-box {
+  padding: 22rpx;
+  border-radius: 16rpx;
+  background: var(--bg);
+  font-size: 24rpx;
+  color: var(--ink);
+  line-height: 1.8;
+}
+
+.sheet-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 32rpx;
+}
+
+.sheet-btn {
+  flex: 1;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.sheet-btn.primary {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.sheet-btn.ghost {
+  color: var(--muted);
+}
+
+/* 识图预览：一行一门，核对完再入库 */
+.ocr-tip {
+  font-size: 22rpx;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: 8rpx;
+}
+
+.ocr-list {
+  max-height: 42vh;
+  overflow-y: auto;
+  margin-top: 8rpx;
+  border-top: 1rpx solid var(--line);
+}
+
+.ocr-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.ocr-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.ocr-name {
+  font-size: 27rpx;
+  color: var(--ink);
+  line-height: 1.35;
+  word-break: break-all;
+}
+
+/* 课程名可改：识别把左右两列粘成一段时，名字可能拆不准 */
+.ocr-name-input {
+  font-size: 27rpx;
+  color: var(--ink);
+  line-height: 1.35;
+  width: 100%;
+  padding: 6rpx 10rpx;
+  margin: -6rpx -10rpx;
+  border-radius: 6rpx;
+  background: rgba(46, 107, 87, 0.05);
+}
+
+.ocr-name-input.warn {
+  background: rgba(192, 138, 30, 0.14);
+}
+
+.ocr-pending-row .ocr-name-input {
+  font-size: 25rpx;
+  color: #7C3B10;
+}
+
+.ocr-meta {
+  font-size: 22rpx;
+  color: var(--muted);
+  margin-top: 4rpx;
+}
+
+.ocr-score {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--ink);
+  flex: none;
+}
+
+.ocr-empty {
+  text-align: center;
+  font-size: 24rpx;
+  color: var(--muted);
+  padding: 32rpx 0;
+}
+
+.ocr-pending {
+  margin-top: 16rpx;
+  background: #FFF7ED;
+  border-radius: 16rpx;
+  padding: 18rpx 20rpx;
+}
+
+.ocr-pending-title {
+  font-size: 24rpx;
+  color: #A94F08;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.ocr-pending-row {
+  padding: 8rpx 0;
+}
+
+.ocr-pending-row .ocr-name {
+  font-size: 25rpx;
+  color: #7C3B10;
+}
+
+.ocr-pending-row .ocr-meta {
+  color: #A94F08;
+  opacity: 0.75;
+}
+
+.ocr-pending-tip {
+  font-size: 20rpx;
+  color: #A94F08;
+  opacity: 0.75;
+  margin-top: 8rpx;
+}
+
+/* 识图专用的离屏画布：要渲染但不可见，不能 display:none 否则拿不到 node */
+.ocr-canvas {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  width: 1600px;
+  height: 1600px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 分类切换：内容整体淡入。两个等价关键帧交替，靠类名变化重启动画 */
+.seg-body {
+  animation-duration: 0.22s;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation-fill-mode: both;
+}
+
+.fx-a { animation-name: seg-in-a; }
+.fx-b { animation-name: seg-in-b; }
+
+@keyframes seg-in-a {
+  from { opacity: 0; transform: translateY(8rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes seg-in-b {
+  from { opacity: 0; transform: translateY(8rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}

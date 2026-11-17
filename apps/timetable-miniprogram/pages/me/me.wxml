@@ -1,0 +1,99 @@
+<view class="page">
+
+  <!-- 品牌概览头 -->
+  <view class="hero">
+    <view class="hero-avatar">
+      <view class="av-line l1"></view>
+      <view class="av-line l2"></view>
+      <view class="av-line l3"></view>
+    </view>
+    <view class="hero-main">
+      <view class="hero-title">课表随行</view>
+      <view class="hero-sub">本机数据 · 不联网不上传</view>
+    </view>
+  </view>
+
+  <!-- 数据概览：整格可点，跳到对应模块 -->
+  <view class="stat-card">
+    <view class="stat" data-target="lesson" bindtap="onTapStat" hover-class="tap-press">
+      <view class="stat-num">{{lessonCount}}</view>
+      <view class="stat-label">课程</view>
+    </view>
+    <view class="stat" data-target="hw" bindtap="onTapStat" hover-class="tap-press">
+      <view class="stat-num">{{hwCount}}</view>
+      <view class="stat-label">作业</view>
+    </view>
+    <view class="stat" data-target="exam" bindtap="onTapStat" hover-class="tap-press">
+      <view class="stat-num">{{examCount}}</view>
+      <view class="stat-label">考试</view>
+    </view>
+    <view class="stat" data-target="grade" bindtap="onTapStat" hover-class="tap-press">
+      <view class="stat-num">{{gradeCount}}</view>
+      <view class="stat-label">成绩</view>
+    </view>
+  </view>
+  <view class="stat-note" wx:if="{{hiddenCount}}">另有 {{hiddenCount}} 节课程已隐藏，可在下方恢复</view>
+
+  <!-- 录入入口 -->
+  <view class="card">
+    <view class="link" bindtap="onGoTimetable" hover-class="tap-press">
+      <view class="link-icon ic-import">
+        <view class="imp-arrow"></view>
+        <view class="imp-base"></view>
+      </view>
+      <view class="link-main">
+        <view class="link-label">导入课表</view>
+        <view class="link-sub">选聊天里的 xls / xlsx / csv / docx 原始文件</view>
+      </view>
+      <view class="link-arrow"><view class="arrow arrow-r"></view></view>
+    </view>
+    <view class="link" bindtap="onGoHw" hover-class="tap-press">
+      <view class="link-icon ic-hw">
+        <view class="hw-box"></view>
+        <view class="hw-line hl1"></view>
+        <view class="hw-line hl2"></view>
+      </view>
+      <view class="link-main">
+        <view class="link-label">记作业和考试</view>
+        <view class="link-sub">粘贴老师发的通知，一次认出好几条</view>
+      </view>
+      <view class="link-arrow"><view class="arrow arrow-r"></view></view>
+    </view>
+    <view class="link" bindtap="onGoGrade" hover-class="tap-press">
+      <view class="link-icon ic-grade">
+        <view class="gr-bar g1"></view>
+        <view class="gr-bar g2"></view>
+        <view class="gr-bar g3"></view>
+      </view>
+      <view class="link-main">
+        <view class="link-label">录成绩</view>
+        <view class="link-sub">导入教务导出的成绩单，或粘贴文本、单条手录</view>
+      </view>
+      <view class="link-arrow"><view class="arrow arrow-r"></view></view>
+    </view>
+  </view>
+
+  <!-- 已隐藏课程 -->
+  <view class="card" wx:if="{{hiddenLessons.length}}">
+    <view class="row-title">已隐藏课程</view>
+    <view class="row" wx:for="{{hiddenLessons}}" wx:key="id">
+      <view class="row-main">
+        <view class="row-label">{{item.name}}</view>
+        <view class="row-slot">{{item.slot}}</view>
+      </view>
+      <view class="restore" data-id="{{item.id}}" bindtap="onRestore" hover-class="tap-press">恢复</view>
+    </view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="card">
+    <view class="row-title">关于</view>
+    <view class="para">课表、作业、考试、成绩都只存在这台手机本地，不联网、不上传。手动加的内容可在本机改和删，隐藏的课程可在这里恢复；换手机、卸载或清缓存会一起丢失。</view>
+  </view>
+
+  <view class="actions">
+    <view class="reset-btn" bindtap="onReset" hover-class="tap-press">清空全部数据</view>
+  </view>
+
+  <view class="note">数据仅存本机，不上传服务器</view>
+</view>

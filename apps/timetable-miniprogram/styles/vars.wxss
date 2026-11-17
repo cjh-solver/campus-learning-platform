@@ -1,0 +1,21 @@
+page {
+  --bg: #FAF9F6;
+  --card: #FFFFFF;
+  --ink: #1A1E1C;
+  --muted: #6D736C;
+  --line: #E8E5DC;
+  --accent: #2E6B57;
+  --teal: #2E6B57;
+  /* 作业页一直在用 --brand / --brand-soft，这里补上同一套色，免得那些按钮没底色 */
+  --brand: #2E6B57;
+  --brand-soft: #E7F0EB;
+  --warn: #C08A1E;
+  --c1: #6CC666;
+  --c2: #F0B43C;
+  --c3: #B48AE4;
+  --c4: #F08454;
+  --c5: #F06084;
+  --c6: #30CCAE;
+  --c7: #E0682F;
+  --r: 14px;
+}

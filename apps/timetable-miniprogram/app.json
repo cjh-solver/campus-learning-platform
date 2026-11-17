@@ -1,0 +1,74 @@
+{
+  "pages": [
+    "pages/timetable/timetable",
+    "pages/hwexam/hwexam",
+    "pages/more/more",
+    "pages/me/me",
+    "pages/grade/grade",
+    "pages/free/free",
+    "pages/contest/contest",
+    "pages/countdown/countdown",
+    "pages/pomodoro/pomodoro"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "课表",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FAF9F6"
+  },
+  "tabBar": {
+    "color": "#7E857F",
+    "selectedColor": "#2E6B57",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/timetable/timetable",
+        "text": "课表",
+        "iconPath": "images/tab/tab-timetable.png",
+        "selectedIconPath": "images/tab/tab-timetable-on.png"
+      },
+      {
+        "pagePath": "pages/hwexam/hwexam",
+        "text": "作业考试",
+        "iconPath": "images/tab/tab-hwexam.png",
+        "selectedIconPath": "images/tab/tab-hwexam-on.png"
+      },
+      {
+        "pagePath": "pages/more/more",
+        "text": "更多",
+        "iconPath": "images/tab/tab-more.png",
+        "selectedIconPath": "images/tab/tab-more-on.png"
+      },
+      {
+        "pagePath": "pages/me/me",
+        "text": "我的",
+        "iconPath": "images/tab/tab-me.png",
+        "selectedIconPath": "images/tab/tab-me-on.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "supportedMaterials": [
+    {
+      "materialType": "application/vnd.ms-excel",
+      "name": "用${nickname}排课表",
+      "desc": "解析教务导出的表格，排成本机课表",
+      "path": "pages/timetable/timetable"
+    },
+    {
+      "materialType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "name": "用${nickname}排课表",
+      "desc": "解析教务导出的表格，排成本机课表",
+      "path": "pages/timetable/timetable"
+    },
+    {
+      "materialType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "name": "用${nickname}排课表",
+      "desc": "解析教务导出的 Word 课表，排成本机课表",
+      "path": "pages/timetable/timetable"
+    }
+  ],
+  "sitemapLocation": "sitemap.json"
+}
