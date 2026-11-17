@@ -14,7 +14,7 @@
     </view>
 
     <view class="swipe" wx:if="{{hasGrid}}"
-      bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd">
+      bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd" bindtouchcancel="onTouchCancel">
       <view class="fixed-col">
         <view class="head-time"><view class="ht-label">节次</view></view>
         <view class="period-col">
@@ -26,7 +26,7 @@
         </view>
       </view>
       <view class="track" style="transform: translateX({{trackX}}px); transition: {{trackAnim}}">
-        <view class="pane {{index === 0 ? 'pane-prev' : index === 2 ? 'pane-next' : ''}}" wx:for="{{panes}}" wx:key="week" wx:for-item="pane">
+        <view class="pane {{index === 0 ? 'pane-prev' : index === 2 ? 'pane-next' : ''}} {{index !== 1 && !sideOn ? 'pane-off' : ''}}" wx:for="{{panes}}" wx:key="week" wx:for-item="pane">
           <view class="head-row">
             <view class="head-day {{h.today ? 'today' : ''}}" wx:for="{{pane.heads}}" wx:key="day" wx:for-item="h">
               <view class="hd-label">{{h.label}}</view>

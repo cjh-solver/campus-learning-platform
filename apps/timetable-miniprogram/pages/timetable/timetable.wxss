@@ -148,11 +148,17 @@
 .swipe {
   display: flex;
   padding: 0 0 2rpx;
+  overflow: hidden;
 }
 
+/* 固定列必须压住轨道：上周屏停在轨道左缘外侧，首列会落进这 68rpx，
+   不抬高就是两层文字叠在一起。白底负责遮挡，z-index 保证顺序。 */
 .fixed-col {
   width: 68rpx;
   flex: none;
+  position: relative;
+  z-index: 3;
+  background: var(--card);
 }
 
 .track {
@@ -179,6 +185,11 @@
 
 .pane-next {
   left: 100%;
+}
+
+/* 静止态收起两侧屏：不占位、不重建节点，只掐可见性 */
+.pane-off {
+  visibility: hidden;
 }
 
 .period-col {

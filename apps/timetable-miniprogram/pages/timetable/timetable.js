@@ -109,6 +109,8 @@ Page({
     trackX: 0,
     trackAnim: "",
     paneW: 0,
+    /* 静止时只留当前周：两侧屏隐藏，任何定位偏差都不会把邻周首列带进视野 */
+    sideOn: false,
     lessonCount: 0,
     weekdays: week.WEEKDAYS,
     startOptions: START_OPTIONS,
@@ -616,7 +618,7 @@ Page({
     this._dir = "";
     this._moved = false;
     this._baseX = typeof this.data.trackX === "number" ? this.data.trackX : 0;
-    this.setData({ trackAnim: "" });
+    this.setData({ trackAnim: "", sideOn: true });
   },
 
   onTouchMove(e) {
@@ -672,11 +674,23 @@ Page({
         this.refresh();
       }
       /* 三屏已按新周重排，关过渡把轨道复位到居中，避免可见回跳 */
-      this.setData({ trackAnim: "", trackX: 0 });
+      this.setData({ trackAnim: "", trackX: 0, sideOn: false });
       this._animating = false;
       this._moved = false;
       this._tx = undefined;
     }, 230);
+  },
+
+  /* 手势被系统打断（来电、下拉通知）：直接归位并收起两侧屏 */
+  onTouchCancel() {
+    if (this._settleTimer) {
+      clearTimeout(this._settleTimer);
+      this._settleTimer = null;
+    }
+    this._animating = false;
+    this._moved = false;
+    this._tx = undefined;
+    this.setData({ trackAnim: "", trackX: 0, sideOn: false });
   },
 
   onToggleWeekend() {
