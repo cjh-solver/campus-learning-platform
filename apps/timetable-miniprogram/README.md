@@ -1,19 +1,43 @@
+<div align="center">
+
 # 校园课表小程序
 
-一个纯本地的微信原生小程序课表工具。没有后端，没有云函数，不发任何网络请求，所有数据只存在本机。
+纯本地的微信原生小程序课表工具。没有后端，没有云函数，不发任何网络请求，所有数据只存在本机。
 
-这是大学生学习平台的第一个子项目。代码来自一个实际在用的课表工具，发布版把真实教务数据全部换成了虚构示例，结构和字段保持不变。
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](../LICENSE)
+![WeChat Mini Program](https://img.shields.io/badge/WeChat-Mini%20Program-07C160.svg)
+![Vanilla JavaScript](https://img.shields.io/badge/JS-Vanilla-yellow.svg)
+
+</div>
+
+## 预览
+
+| 课表 | 作业考试 | 成绩 |
+| :---: | :---: | :---: |
+| ![课表](docs/screenshots/timetable.png) | ![作业考试](docs/screenshots/homework.png) | ![成绩](docs/screenshots/grade.png) |
+
+| 专注计时 | 倒计时 | 更多工具 |
+| :---: | :---: | :---: |
+| ![专注计时](docs/screenshots/pomodoro.png) | ![倒计时](docs/screenshots/countdown.png) | ![更多工具](docs/screenshots/more.png) |
 
 ## 功能
 
-- 课表：按周查看，三屏缓冲区左右跟手翻周，上周、本周、下周连续滚动；支持 5 天 / 7 天切换，节次列固定在左侧，今天和当前节次高亮。
-- 导入：读教务系统导出的 xls / xlsx / docx 原表，也接受粘贴表格文本。解析在本地完成，不上传。
-- 作业考试：按日期分组的待办清单，可粘贴通知文本或识别截图，考试卡带课程配色条。
-- 成绩：整张成绩单导入或单条录入，按必修、选修、通识分类，配三张分析图。
-- 空教室：按时间段查本班课表以外的空闲教室。
-- 竞赛：按月分组的校级赛事清单，带日期状态标记和关注星标。
-- 倒计时、番茄钟：课程节点倒计时与专注计时，都在本地跑。
-- 更多页：工具宫格，长按可拖动排序，顺序存本地。
+| 模块 | 能力 |
+| --- | --- |
+| 课表 | 按周查看，三屏缓冲区左右跟手翻周，上周、本周、下周连续滚动；5 天 / 7 天切换，节次列固定在左侧，今天和当前节次高亮 |
+| 导入 | 读教务系统导出的 xls / xlsx / docx 原表，也接受粘贴表格文本；解析在本地完成，不上传 |
+| 作业考试 | 按日期分组的待办清单，可粘贴通知文本或识别截图，考试卡带课程配色条 |
+| 成绩 | 整张成绩单导入或单条录入，按个人成绩、专业考试、综测分类，配三张分析图 |
+| 空教室 | 按时间段查本班课表以外的空闲教室 |
+| 竞赛 | 按月分组的校级赛事清单，带日期状态标记和关注星标 |
+| 倒计时、番茄钟 | 课程节点倒计时与专注计时，都在本地跑 |
+| 更多页 | 工具宫格，长按可拖动排序，顺序存本地 |
+
+## 运行
+
+1. 微信开发者工具导入本目录。
+2. AppID 填自己的，或直接用测试号；仓库里的 `touristappid` 是占位。
+3. 编译即可，不需要装依赖，不需要配服务器域名。
 
 ## 目录
 
@@ -28,20 +52,18 @@ utils/                            纯逻辑层，全部可脱离小程序在 Nod
   parse-lesson.js file-lesson.js docx-lesson.js   表格与 Word 解析
   parse-grade.js grade-rows.js grade.js          成绩解析与统计
   hw.js contest.js countdown.js pomodoro.js      各模块数据层
-  storage.js                      本地存储封装，键名 ct-state-v1
+  feedback.js                      全局提示与振动反馈
+  storage.js                       本地存储封装，键名 ct-state-v1
   ocr-*.js vk-ocr.js              端侧 OCR 接入
 data/kb-data.js                   课表快照（示例数据）
+data/demo-state.js                作业、考试、成绩、番茄演示数据
 styles/vars.wxss                  色板变量
+images/                           tabBar 图标与星标本地位图
 vendor/                           xlsx 与 pako，均本地引用
+docs/screenshots/                 README 预览截图
 ```
 
 配套的设计与踩坑文档在仓库根目录的 `skills/wechat-miniprogram-timetable/`，不在本目录内。
-
-## 运行
-
-1. 微信开发者工具，导入本目录。
-2. AppID 填自己的，或直接用测试号。仓库里的 `touristappid` 是占位。
-3. 编译即可，不需要装依赖，不需要配服务器域名。
 
 ## 数据
 
@@ -61,7 +83,9 @@ vendor/                           xlsx 与 pako，均本地引用
 
 单条记录是 `[课程索引, 教师索引, 教室索引, 星期, 起始节, 节数, 周次]`。周次支持 `1-16`、`3,5,7`、`5-15(单)` 这几种写法。
 
-要接自己的数据，把这份文件换成自己的导出结果即可，其余代码不用动。`utils/week.js` 里的 `SEMESTER_START` 和 `MAX_WEEK` 按本校校历改。
+`data/demo-state.js` 提供十条作业、五场考试、二十二条成绩和一份番茄统计，首次启动自动写入，各页面都不是空的。在「我的」页清空数据后回到空态，导入自己的数据即可覆盖。
+
+要接自己的数据，把这两份文件换成自己的导出结果即可，其余代码不用动。`utils/week.js` 里的 `SEMESTER_START` 和 `MAX_WEEK` 按本校校历改。
 
 用户自己导入的课表、作业、成绩、关注列表全部走 `wx.setStorageSync`，键名 `ct-state-v1`，卸载小程序即消失。
 
