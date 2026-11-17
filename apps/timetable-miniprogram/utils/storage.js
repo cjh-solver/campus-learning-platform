@@ -88,6 +88,11 @@ function loadState() {
   }
   const s = normalize(raw);
   if (!raw.seeded) {
+    /* 首次打开写入虚构演示数据，让各页面都有内容可看；清空后回到空态 */
+    try {
+      const demo = require("../data/demo-state.js");
+      Object.assign(s, demo());
+    } catch (e) {}
     try {
       wx.setStorageSync(STORAGE_KEY, s);
     } catch (e) {}
